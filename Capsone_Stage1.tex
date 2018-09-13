@@ -1,9 +1,9 @@
 \documentclass{article}
 \usepackage{graphicx}
 \graphicspath{{./images/}}
-
-\title{% 
-  \bfseries{HomeFoodie}\\
+\usepackage[section]{placeins}
+\title{%
+  \huge \bfseries{HomeFoodie}\\
   \rule{8cm}{0.2pt}
   \linebreak[10pt]
   \large Udacity Nanodegree-Capstone \\
@@ -25,8 +25,9 @@
 \pagebreak
 \section{DESCRIPTION}
   A user centric platform for selling and buying delicious, highest-quality, affordable homemade food to friends, family, and everyone within reach!.
-  HomeFoodie provides an opportunity for ordering homemade dishes made by local home chiefs in a proximity of the user.
-  If you don’t feel like cooking and do not want to order junk food, or if people congratulate you for delicious meals and you want to earn extra cash then HomeFoodie is the right app for you. Foodie connects users to home cookers who offer their home cooked food services to anyone within delivery reach. Why cook while you can let your neighbors, friends, excellent home chiefs do it for you!.
+  HomeFoodie provides an opportunity for ordering homemade dishes made by local home chiefs in proximity of the user.
+  If you don’t feel like cooking and do not want to order junk food, or if people congratulate you for delicious meals you cook and you want to earn extra cash then HomeFoodie is the right app for you. Foodie connects users to home cookers who offer their home cooked food services to anyone within delivery reach.
+  Why cook while you can let your neighbors, friends, excellent home chiefs do it for you!.
 
 \section{INTENDED USER}
   Families.
@@ -37,8 +38,8 @@
 
 
 \section{FEATURES}
-  Saves information. 
-  Takes pictures.
+  Saves user information. 
+  Takes and saves dish pictures.
   Manage User’s profile.
   Show location on Google Maps.
   Allows sellers to list their products.
@@ -49,8 +50,8 @@
 
 
 \section{USER INTERFACE MOCKS}
-  \subsection{Login}
-  \begin{figure}[ht]
+\subsection{Login}
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=.5\textwidth]{login}
     \caption{User can login using firebase}
@@ -58,7 +59,7 @@
   \end{figure}
 
   \subsection{Warmer}
-    \begin{figure}
+  \begin{figure}[!ht]
     \centering
     \includegraphics[width=.5\textwidth]{warmer}
     \caption{tutorial and warmer built using viewPager which will show when a user uses the app for the first time. }
@@ -66,47 +67,68 @@
     \end{figure}
 
   \subsection{Main Page}
-    \begin{figure}
+  \begin{figure}[!ht]
     \centering
     \includegraphics[width=.5\textwidth]{mainpage}
     \caption{Main Page shows list of home cookers. A search bar is present with google maps localization and search for home cookers near the user }
-    \label{fig:warmer}
+    \label{fig:mainpage}
     \end{figure}
 
     
-
-
-
-
-
   \subsection{Details Screen}
-    \includegraphics{details} 
-    Details screen of a home cooked meal. Shows rating,price,ingredients, name of cook, and reviews
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{details}
+    \caption{Details screen of a home cooked meal. Shows rating,price,ingredients, name of cook, and reviews }
+    \label{fig:details}
+    \end{figure}
 
   \subsection{User Profile}
-    \includegraphics{profile}
-    User profile page. If the user is also a seller, additional information will be shown like business name and total number of dishes
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{profile}
+    \caption{User profile page. If the user is also a seller, additional information will be shown like business name and total number of dishes }
+    \label{fig:profile}
+    \end{figure}
 
   \subsection{Search}
-    \includegraphics{search}
-    User can search people who offer home cooked food service near their location.
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{search}
+    \caption{ User can search people who offer home cooked food service near their location. }
+    \label{fig:search}
+    \end{figure}
 
-  \subsection{Dish creation page}
-    \includegraphics{dishcreation}
-    Food cooker users can create dishes, enter their ingredients, price, name...
+    \subsection{Dish creation page}
+    \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{dishcreation}
+    \caption{Food cooker users can create dishes, enter their ingredients, price, name... } 
+    \label{fig:dishcreation}
+    \end{figure}
 
-  \subsection{App widget page}
-    \includegraphics{widget}
-    User can create a widget of the app will summarize their last order.
-
+    \subsection{App widget page}
+    \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{widget}
+    \caption{User can create a widget of the app will summarize their last order. }
+    \label{fig:widget}
+    \end{figure}
 
 
 
 \section{KEY CONSIDERATIONS}
 \subsection{Data persistence strategy}
-  How will your app handle data persistence? 
-
-  The app will use Room ORM to handle local data persistence, such as order history and favorite dishes and user’s data. And it will use Firebase to store users sign-in and their associated data.
+  \begin{enumerate}
+    \item Shared Preference
+    \item Local Database using Room ORM
+    \item Firebase cloud storage Database
+  \end{enumerate}
+  \begin{itemize}
+    \item User profile information will be retrieved from the remote database.
+    \item Current cart will be stored in Shared Preference
+    \item Room ORM will be used to store order history, favorites, user profile
+  \end{itemize}
   Upon app start a service will launch to fetch data from firebase storage and update existing local DB.
   When a user sign-in to purchase food or to add dishes, data will be saved to local DB and synced with firebase cloud storage.
 
@@ -125,6 +147,7 @@
     \item Room v1.1.1: less boilerplate code, SQL validation at compile time 
     \item Retrofit v2.4.0: to handle network calls and data fetching and sending from a distant server.
     \item RecyclerView v7:27.1.1: to display scrolling elements like cards.
+    \item Gson v2.8.5
     \item Android studio v3.1.4
     \item Gradle v4.4
     \item Java v1.8.0
