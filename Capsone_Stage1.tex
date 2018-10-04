@@ -1,0 +1,300 @@
+\documentclass{article}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+\usepackage[section]{placeins}
+\title{%
+  \huge \bfseries{HomeFoodie}\\
+  \rule{8cm}{0.2pt}
+  \linebreak[10pt]
+  \large Udacity Nanodegree-Capstone \\
+  \large Android application\\}
+
+\date{\today}
+\author{by Baturay ALHAJ AHMAD}
+
+
+\begin{document}
+
+  \maketitle
+  \hrule
+
+  \pagebreak
+
+
+\tableofcontents
+\pagebreak
+\section{DESCRIPTION}
+  A user centric platform for selling and buying delicious, highest-quality, affordable homemade food to friends, family, and everyone within reach!.
+  HomeFoodie provides an opportunity for ordering homemade dishes made by local home chiefs in proximity of the user.
+  If you don’t feel like cooking and do not want to order junk food, or if people congratulate you for delicious meals you cook and you want to earn extra cash then HomeFoodie is the right app for you. Foodie connects users to home cookers who offer their home cooked food services to anyone within delivery reach.
+  Why cook while you can let your neighbors, friends, excellent home chiefs do it for you!.
+
+\section{INTENDED USER}
+  Families.
+  Students.
+  Friends.
+  Anyone who wants to eat homemade food.
+  Anyone who wants to make extra money by providing cooking services.
+
+
+\section{FEATURES}
+  Saves user information. 
+  Takes and saves dish pictures.
+  Manage User’s profile.
+  Show location on Google Maps.
+  Allows sellers to list their products.
+  Allows buyers to see products.
+  Allows buyers to save their favorite sellers.
+  Allows user login.
+  Allows user to add a widget.
+
+
+\section{USER INTERFACE MOCKS}
+\subsection{Login}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{login}
+    \caption{User can login using firebase}
+    \label{fig:login}
+  \end{figure}
+
+  \subsection{Warmer}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{warmer}
+    \caption{tutorial and warmer built using viewPager which will show when a user uses the app for the first time. }
+    \label{fig:warmer}
+    \end{figure}
+
+  \subsection{Main Page}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{mainpage}
+    \caption{Main Page shows list of home cookers. A search bar is present with google maps localization and search for home cookers near the user }
+    \label{fig:mainpage}
+    \end{figure}
+
+    
+  \subsection{Details Screen}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{details}
+    \caption{Details screen of a home cooked meal. Shows rating,price,ingredients, name of cook, and reviews }
+    \label{fig:details}
+    \end{figure}
+
+  \subsection{User Profile}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{profile}
+    \caption{User profile page. If the user is also a seller, additional information will be shown like business name and total number of dishes }
+    \label{fig:profile}
+    \end{figure}
+
+  \subsection{Search}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{search}
+    \caption{ User can search people who offer home cooked food service near their location. }
+    \label{fig:search}
+    \end{figure}
+
+    \subsection{Dish creation page}
+    \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{dishcreation}
+    \caption{Food cooker users can create dishes, enter their ingredients, price, name... } 
+    \label{fig:dishcreation}
+    \end{figure}
+
+    \subsection{App widget page}
+    \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.5\textwidth]{widget}
+    \caption{User can create a widget of the app will summarize their last order. }
+    \label{fig:widget}
+    \end{figure}
+
+
+
+\section{KEY CONSIDERATIONS}
+\subsection{Data persistence strategy}
+  \begin{enumerate}
+    \item Shared Preference
+    \item Local Database using Room ORM
+    \item Firebase cloud storage Database
+  \end{enumerate}
+  \begin{itemize}
+    \item User profile information will be retrieved from the remote database.
+    \item Current cart will be stored in Shared Preference
+    \item Room ORM will be used to store order history, favorites, user profile
+  \end{itemize}
+  Upon app start a service will launch to fetch data from firebase storage and update existing local DB.
+  When a user sign-in to purchase food or to add dishes, data will be saved to local DB and synced with firebase cloud storage.
+
+\subsection{Corner cases UX}
+  The app will use the android system builds to back stack user navigation from one activity to next.
+  If the app is launched via a widget or notification the app will build its own back stack to navigate upon back button press.
+  As for the fragments in the case of master/detail flow the app will use addToBackStack() before commiting a transaction.
+
+\subsection{Third party libraries}
+  Describe any libraries you’ll be using and share your reasoning for including them.
+
+  \begin{enumerate}
+    \item Picasso v2.71828: to handle loading and caching of images of homemade cuisines. 
+    \item butterknife v8.8.1: to handle annotating fields and automatically cast the corresponding view of the layout. Less boiler code.
+    \item LiveData v1.1.1: to handle data changes, data loading.
+    \item Room v1.1.1: less boilerplate code, SQL validation at compile time 
+    \item Retrofit v2.4.0: to handle network calls and data fetching and sending from a distant server.
+    \item RecyclerView v7:27.1.1: to display scrolling elements like cards.
+    \item Gson v2.8.5
+    \item Android studio v3.1.4
+    \item Gradle v4.4
+    \item Java v1.8.0
+  \end{enumerate}
+
+
+\subsection{Google Play Services}
+  \begin{itemize}
+    \item firebase for user authentication. User will use their google account to login and be authenticated via firebase.
+    \item google maps API to localize users and mark the closest home cookers. User will have to share their location in-order to see home-cookers close to their location.
+    \item cloud storage to host user generated related content like images, and personal information. Home-cookers will be able to store their dishes and related information about them User will be able to take photos of their images of cuisine. These images will be uploaded to cloud storage.
+  \end{itemize}
+
+\section{REQUIRED TASKS}
+\subsection{Task 1: Project Setup}
+    Java v1.8.0 will be used for this project.
+  \begin{enumerate}
+    \item create account on google firebase and enable authentication and google maps api.
+    \item setup firebase cloud storage in firebase console.
+    \item---create the warmer and user welcome pages if first login.
+    \item create network calls logic to fetch a list of home-cooked dishes to display to the user.
+    \item create login activity and integrate firebase api.
+    \item fetch user information.
+    \item create content provider logic to store user data on the local device.
+    \item create the logic for adding dishes by the home-cookers.
+    \item create the logic for cart and ordering.
+    \item create the logic for widget.
+  \end{enumerate}
+
+
+
+\subsection{Task 2: Implement UI for each activity and fragment}
+  \begin{itemize}
+    \item Build UI for MainActivity.
+    \item Build UI for detailed activity to display dishes details.
+    \item Build UI for login.
+    \item Build UI to display dishes offered near a users location.
+    \item Build UI to display User(buyer and seller) profile.
+    \item Build UI to permit a user(seller) to add a dish.
+    \item Create UI for displaying cart items and ordering.
+  \end{itemize}
+
+
+\subsection{Task 3: Registeration}
+	As a user I want to be able to register. 
+  \begin{itemize}
+    \item create a project in google firebase service and enable authentication
+    \item implement Room to store user information
+    \item create the UI for login
+  \end{itemize}
+\subsection{Task 4: Location search}
+	As a user I want to be able to see home-cooked food near me 
+  \begin{itemize}
+    \item activate google maps from firebase API
+    \item integrate needed libraries in android project
+    \item create the necessary logic to pull data from firebase.
+    \item create the UI to display the data.
+  \end{itemize}
+
+\subsection{Task 5: Save photos of dishes}
+	As a user I want to be able to save photos of my dishes
+\begin{itemize}
+  \item enable firebase cloud storage and setup database structure.
+  \item integrate related libraries in the android project.
+\end{itemize}
+
+\subsection{Task 6: Firebase save/retrieve user data}
+an app I want to be able to make network calls to firebase to retrieve or save user data 
+\begin{itemize} 
+  \item create a retrofit service class and a queue.
+\end{itemize}
+
+\subsection{Task 7: Warmer screen}
+	As a user I want to see a warmer screen
+  \begin{itemize}
+    \item create a viewPager to display 3 sliding warmer screens
+    \item create the UI.
+  \end{itemize}
+
+\subsection{Task 8: Showing Dish details}
+	As a user I want to be able to see a dish details 
+  \begin{itemize}
+    \item create an activity to display a dish details.
+    \item create the needed logic to check if a dish information are in the local DB. if not in local    DB create the logic to fetch the dish information from firebase.
+    \item create the UI
+  \end{itemize}
+
+\subsection{Task 9: Adding dishes to users list}
+	As a user(home cooker) I want to be able to add my dishes to the app
+  \begin{itemize}
+	  \item create the relevant activity.
+    \item create the logic to save dishes to local DB and to firebase cloud storage.
+    \item create the UI.
+  \end{itemize}
+
+\subsection{Task 10: Saving dishes to local DB}
+	As a user I want to to save my information into a local DB
+  \begin{itemize}
+    \item create a content provider to save user information.
+    \item implement LiveData.
+  \end{itemize}
+
+\subsection{Task 11: Ordering dishes}
+	As a user I want to be able to add/remove and inspect dishes in cart
+  \begin{itemize}
+    \item  create the logic to add items to the cart
+    \item create the logic to remove items from the cart.
+    \item create the logic to see items in a cart.
+    \item create the logic to validate a cart
+    \item create the logic to send a home-cooker an order information.
+  \end{itemize}
+
+\subsection{Task 12: Auto syncing data}
+As a an app I want to be able to sync local data with firebase automatically 
+  \begin{itemize}
+    \item create a service to sync user data and new available dishes automatically between firebase and the app local DB.
+  \end{itemize}
+
+\subsection{Task 13: Create App widget}
+  \begin{itemize}
+    \item An app widget will be created to summarize last order for the user.
+  \end{itemize}
+
+\subsection{Task 14: unit and instrumentation tests}
+  \begin{itemize} 
+    \item Unit and instrumentation will be writen to test main functionality of the app.
+  \end{itemize}
+
+
+\subsection{Task 15: List HomeFoodie on the app store}
+	As a user I want to able to download the app from the app store.
+  \begin{itemize}
+    \item	integrate the app in the app store
+  \end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
