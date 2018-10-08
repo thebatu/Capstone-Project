@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database;
+package com.example.bats.homefoodie.database.userDatabase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -8,11 +8,15 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.example.bats.homefoodie.database.HomeFoodieDatabase;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+
 import java.util.List;
 
  /**
   * {@link Dao} which provides an api for all data operations with the {@link HomeFoodieDatabase}
   */
+ @Dao
 public interface UserDao {
 
 

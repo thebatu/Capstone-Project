@@ -1,10 +1,11 @@
-package com.example.bats.homefoodie.database;
+package com.example.bats.homefoodie.database.userDatabase;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = {@Index("id")})
 public class UserEntry {
 
     @PrimaryKey(autoGenerate = true)

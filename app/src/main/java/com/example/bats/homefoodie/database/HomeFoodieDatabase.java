@@ -7,6 +7,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.bats.homefoodie.database.userDatabase.UserDao;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+
 
 /**
  * {@link HomeFoodieDatabase} database for the application including a table for{@link UserEntry}
