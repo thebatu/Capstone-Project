@@ -19,7 +19,6 @@ import java.util.List;
  @Dao
 public interface UserDao {
 
-
     /**
      * Selects all users. the LiveData will be kept in sync with the database.
      * so that it will automatically notify observers when the

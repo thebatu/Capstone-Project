@@ -20,7 +20,7 @@ import java.util.List;
 public interface DishDao {
 
     /**
-     * Selects all users. the LiveData will be kept in sync with the database.
+     * Selects all dishes. the LiveData will be kept in sync with the database.
      * so that it will automatically notify observers when the
      * * values in the table change.
      * @return users
