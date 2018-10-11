@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database.userDatabase;
+package com.example.bats.homefoodie.data.database.userDatabase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -8,8 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.data.database.HomeFoodieDatabase;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public interface UserDao {
      * @return users
      */
     @Query("SELECT * FROM user")
-    LiveData<List<UserEntry>> getAllUsers();
+    List<UserEntry> getAllUsers();
 
 
     /**
@@ -46,8 +45,8 @@ public interface UserDao {
     void deleteUser(UserEntry user);
 
 
-    @Insert
-    void insertUser(UserEntry user);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void bulkInsert(UserEntry... user);
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database;
+package com.example.bats.homefoodie.data.database;
 
 
 import android.arch.persistence.room.Database;
@@ -7,10 +7,10 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.bats.homefoodie.database.dishDatabase.DishDao;
-import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.userDatabase.UserDao;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.data.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.data.database.dishDatabase.DishDao;
+import com.example.bats.homefoodie.data.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.data.database.userDatabase.UserDao;
 
 
 /**

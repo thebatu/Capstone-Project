@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database.userDatabase;
+package com.example.bats.homefoodie.data.database.userDatabase;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

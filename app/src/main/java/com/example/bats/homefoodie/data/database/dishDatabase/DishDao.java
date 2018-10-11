@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database.dishDatabase;
+package com.example.bats.homefoodie.data.database.dishDatabase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -8,8 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.data.database.HomeFoodieDatabase;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public interface DishDao {
      * @return a dish
      */
     @Query("SELECT * FROM dish WHERE userId == :userId")
-    LiveData<List<DishEntry>> getDishForUser(int userId);
+    List<DishEntry> getDishForUser(int userId);
 
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

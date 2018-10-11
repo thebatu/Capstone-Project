@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.database.dishDatabase;
+package com.example.bats.homefoodie.data.database.dishDatabase;
 
 
 import android.arch.persistence.room.Entity;
@@ -6,7 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.data.database.userDatabase.UserEntry;
 
 @Entity(tableName = "dish", foreignKeys = @ForeignKey(entity = UserEntry.class,
         parentColumns = "id",
