@@ -12,13 +12,14 @@ import android.widget.ProgressBar;
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
+import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 public class MainActivity extends AppCompatActivity implements DishesAdapter.DishesAdapterOnItemClickHandler {
 
     DishesViewModel mDishesViewModel;
 
     //adapter related declarations
-    private DishesAdapter mDishesAdaper;
+    private DishesAdapter mDishesAdapter;
     private RecyclerView mDishesRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
 
@@ -44,15 +45,14 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
         mDishesRecyclerView.setLayoutManager(layoutManager);
         mDishesRecyclerView.setHasFixedSize(true);
 
-        mDishesAdaper = new DishesAdapter(this, this);
-        mDishesRecyclerView.setAdapter(mDishesAdaper);
+        mDishesAdapter = new DishesAdapter(this, this);
+        mDishesRecyclerView.setAdapter(mDishesAdapter);
 
-
-        MainViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this.getApplicationContext());
+        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this.getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
 
         mDishesViewModel.getAllDishes().observe(this, dishEateries -> {
-            mDishesAdaper.swapDishes(dishEateries);
+            mDishesAdapter.swapDishes(dishEateries);
             if (mPosition == RecyclerView.NO_POSITION) {
                 mPosition = 0;
             }
@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
             else showLoading();
 
         });
-
-
 
     }
 

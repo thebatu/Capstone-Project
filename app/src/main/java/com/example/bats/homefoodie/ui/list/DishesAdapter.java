@@ -13,7 +13,7 @@ import java.util.List;
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
 
     private final Context mContext;
-    List<DishEntry> dishes;
+    private List<DishEntry> mDishes;
 
     private final DishesAdapterOnItemClickHandler mClickHandler;
 
@@ -39,20 +39,26 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         return 0;
     }
 
+    public void swapDishes(List<DishEntry> dishEntries) {
+        //if there was no dish data, then recreate all of the list
+        if (mDishes == null) {
+            mDishes = dishEntries;
+            notifyDataSetChanged();
+        }
+    }
+
 
     public interface DishesAdapterOnItemClickHandler {
         void onClick();
     }
 
 
-    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
         }
-
-
 
 
         @Override

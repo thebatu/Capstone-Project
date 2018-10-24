@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 
 import java.util.List;
@@ -16,32 +17,29 @@ import java.util.List;
  * and it holdes all the data of the Ui (@link mAllDishes). it is only logical that here the
  * data of the UI should exist.
  */
-public class DishesViewModel extends AndroidViewModel {
+public class DishesViewModel extends ViewModel {
 
-    private HomeFoodieRespository mHomeFoodieRespository;
+    private HomefoodieRepository mHomeFoodieRepository;
     private LiveData<List<DishEntry>> mAllDishes;
 
 
-    public DishesViewModel(Application application) {
-        super(application);
+    public DishesViewModel(HomefoodieRepository repository) {
         //the repository instance.
-        mHomeFoodieRespository = new HomeFoodieRepository(application);
+        mHomeFoodieRepository = repository;
         //all of my dishes.
-        mAllDishes = mHomeFoodieRespository.getAllDishes();
-
-        /**getAllDishes
-         * Insert a DishEntry to the database, local or distant using the repository.class
-         * as a proxy
-         */
-        public void insert (DishEntry dish){
-            mHomeFoodieRespository.insert(dish)
-        } ;
-
-        //getter
-        public LiveData<List<DishEntry>> getAllDishes () {
-            return mAllDishes;
-        }
+        mAllDishes = mHomeFoodieRepository.getAllDishes();
     }
 
+    /**getAllDishes
+     * Insert a DishEntry to the database, local or distant using the repository.class
+     * as a proxy
+     */
+    public void insert (DishEntry dish){
+        mHomeFoodieRepository.insert(dish);
+    }
 
+    //getter
+    public LiveData<List<DishEntry>> getAllDishes() {
+        return mAllDishes;
+    }
 }

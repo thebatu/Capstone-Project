@@ -46,8 +46,13 @@ public interface DishDao {
     void deleteRepo(DishEntry dish);
 
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDish(DishEntry dish);
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void bulkInset(DishEntry... dish);
+
 
 
 
