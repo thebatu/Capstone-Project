@@ -6,23 +6,31 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class DishesAdaper extends RecyclerView.Adapter<DishesAdaper.DishesAdapterViewHolder> {
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+
+import java.util.List;
+
+public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
 
     private final Context mContext;
+    List<DishEntry> dishes;
 
+    private final DishesAdapterOnItemClickHandler mClickHandler;
 
-    public DishesAdaper(Context context) {
+    public DishesAdapter(Context context, DishesAdapterOnItemClickHandler clickHandler) {
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @NonNull
     @Override
-    public DishesAdaper.DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public DishesAdapter.DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return null;
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull DishesAdaper.DishesAdapterViewHolder dishesAdapterViewHolder, int i) {
+    public void onBindViewHolder(@NonNull DishesAdapter.DishesAdapterViewHolder dishesAdapterViewHolder, int i) {
 
     }
 
@@ -32,7 +40,9 @@ public class DishesAdaper extends RecyclerView.Adapter<DishesAdaper.DishesAdapte
     }
 
 
-
+    public interface DishesAdapterOnItemClickHandler {
+        void onClick();
+    }
 
 
     public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
