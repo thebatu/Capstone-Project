@@ -26,7 +26,7 @@ public interface DishDao {
      * @return users
      */
     @Query("SELECT * FROM dish")
-    LiveData<List<DishEntry>> getAllDishs();
+    LiveData<List<DishEntry>> getAllDishes();
 
 
     /**
@@ -42,8 +42,8 @@ public interface DishDao {
     void updateDish(DishEntry dish);
 
 
-    @Delete
-    void deleteRepo(DishEntry dish);
+    @Query("DELETE FROM dish")
+    void deleteRepo();
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

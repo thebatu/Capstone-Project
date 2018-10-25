@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * this class holds the data of the UI. it survive configuration changes and it is a replacement
- * for AsyncTaskLoaders. It holder a reference to the Repository {@link HomeFoodieRepository}
+ * for AsyncTaskLoaders. It holder a reference to the Repository {@link HomefoodieRepository}
  * and it holdes all the data of the Ui (@link mAllDishes). it is only logical that here the
  * data of the UI should exist.
  */

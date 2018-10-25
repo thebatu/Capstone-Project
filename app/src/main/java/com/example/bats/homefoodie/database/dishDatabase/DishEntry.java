@@ -19,10 +19,14 @@ public class DishEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int userId;
-
     private String name;
     private int price;
 
+    public DishEntry(int userId, String name, int price) {
+        this.userId = userId;
+        this.name = name;
+        this.price = price;
+    }
 
 
     public int getId() {

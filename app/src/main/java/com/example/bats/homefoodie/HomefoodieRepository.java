@@ -1,11 +1,16 @@
 package com.example.bats.homefoodie;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
+import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
+
+import java.util.Date;
+import java.util.List;
 
 public class HomefoodieRepository {
     private static final String LOG_TAG = HomefoodieRepository.class.getSimpleName();
@@ -29,6 +34,7 @@ public class HomefoodieRepository {
         this.mExecutors = mExecutors;
 
         LiveData<DishEntry[]> networkData = mHomeFoodieNetworkDataSource.getLatestDishes();
+
         networkData.observeForever(newDishesListFromNetwork -> {
             mExecutors.diskIO().execute(() -> {
                 deleteOldData();
@@ -45,7 +51,7 @@ public class HomefoodieRepository {
         Log.d(LOG_TAG, "Getting the repository");
         if (sInstance == null){
             synchronized (LOCK) {
-                sInstance = new HomefoodieRepository( dishDao, userDao, homeFoodieNetworkDataSource
+                sInstance = new HomefoodieRepository( dishDao, userDao, homeFoodieNetworkDataSource,
                 executors);
                 Log.d(LOG_TAG, "Made new repository");
 
@@ -53,6 +59,19 @@ public class HomefoodieRepository {
         }
         return sInstance;
     }
+
+
+     /**
+     * Deletes old dishes data
+     */
+    private void deleteOldData() {
+        mDishDao.deleteRepo();
+    }
+
+
+    public LiveData<List<DishEntry>> getAllDishes(){ return mDishDao.getAllDishes(); }
+
+    public void insert(DishEntry dish){ mDishDao.insertDish(dish); }
 
 
 }

@@ -8,13 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
-public class MainActivity extends AppCompatActivity implements DishesAdapter.DishesAdapterOnItemClickHandler {
+public class MainActivity extends AppCompatActivity implements DishesAdapter
+        .DishesAdapterOnItemClickHandler {
 
     DishesViewModel mDishesViewModel;
 
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
         mDishesRecyclerView.setLayoutManager(layoutManager);
         mDishesRecyclerView.setHasFixedSize(true);
@@ -48,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
         mDishesAdapter = new DishesAdapter(this, this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
-        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this.getApplicationContext());
+        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
+                .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
 
         mDishesViewModel.getAllDishes().observe(this, dishEateries -> {
@@ -69,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
 
 
     /**
-     * This method will make the View for the Dishes list data visible and hide the error message and
+     * This method will make the View for the Dishes list data visible and hide the error message
+     * and
      * loading indicator.
      * <p>
      * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
@@ -97,22 +102,18 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
     }
 
 
+
+
+
     /**
      * handles clicks on an item. clicks are sent from the dishes adapter.
      */
     @Override
-    public void onClick() {
+    public void onClick(int clickedOnPos, DishEntry dish) {
+        Toast.makeText(this, "Clicked on a dish", Toast.LENGTH_LONG).show();
 
     }
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -125,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
 
                 HomeFoodieDatabase.getInstance(context).userDao()
                         .insertUser(
-                                new UserEntry( "batu", "thebatu@gmail.com", "road to fame", true, "Dest Inc"));
+                                new UserEntry( "batu", "thebatu@gmail.com", "road to fame", true,
+                                 "Dest Inc"));
             }
 
         };
@@ -141,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.Dis
 
 
                         userDao.insertUser(
-                                        new UserEntry( "batu", "thebatu@gmail.com", "road to fame", true, "Dest Inc"));
+                                        new UserEntry( "batu", "thebatu@gmail.com", "road to
+                                        fame", true, "Dest Inc"));
 
 
                          List entry = userDao.getAllUsers();

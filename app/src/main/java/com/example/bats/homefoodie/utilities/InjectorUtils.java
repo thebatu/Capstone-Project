@@ -6,6 +6,8 @@ import android.content.Context;
 import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
+import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
+import com.example.bats.homefoodie.ui.MainViewModelFactory;
 
 /**
  * Provides static methods to inject the various classes needed for HomeFoodie
@@ -14,7 +16,8 @@ public class InjectorUtils {
 
     public static HomefoodieRepository provideRepository(Context context) {
 
-        HomeFoodieDatabase database = HomeFoodieDatabase.getInstance(context.getApplicationContext());
+        HomeFoodieDatabase database = HomeFoodieDatabase.getInstance(context
+                .getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
 
         HomeFoodieNetworkDataSource networkDataSource =
@@ -32,7 +35,10 @@ public class InjectorUtils {
         return HomeFoodieNetworkDataSource.getInstance(context.getApplicationContext(), executors);
     }
 
-
+    public static MainViewModelFactory provideDishesViewModelFactory(Context context) {
+        HomefoodieRepository repository = provideRepository(context.getApplicationContext());
+        return new MainViewModelFactory(repository);
+    }
 
 
 }
