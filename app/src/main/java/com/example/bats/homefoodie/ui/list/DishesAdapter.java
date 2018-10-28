@@ -2,20 +2,22 @@ package com.example.bats.homefoodie.ui.list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
 
 /**
  * Exposes a list of dishes from a list of {@link DishEntry} to a {@link RecyclerView}.
@@ -25,11 +27,17 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     private final Context mContext;
     private List<DishEntry> mDishes;
     private final DishesAdapterOnItemClickHandler mClickHandler;
+    private SparseBooleanArray expandState = new SparseBooleanArray();
+
 
     //constructor
     public DishesAdapter(Context context, DishesAdapterOnItemClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
+        //set initial expanded state to false
+        for (int i = 0; i < mDishes.size(); i++) {
+            expandState.append(i, false);
+        }
     }
 
     /**
@@ -50,15 +58,16 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
 
     /**
-     * @param holder The ViewHolder which should be updated to represent the
-     *                                contents of the item at
-     *                                the given position in the
-     *                                data set.
-     * @param position                The position of the item within the adapter's data set
+     * @param holder   The ViewHolder which should be updated to represent the
+     *                 contents of the item at
+     *                 the given position in the
+     *                 data set.
+     * @param position The position of the item within the adapter's data set
      */
     @Override
     public void onBindViewHolder(@NonNull DishesAdapter.DishesAdapterViewHolder
-                                             holder, int position) {
+                                         holder, int position) {
+
         DishEntry dishEntry = mDishes.get(position);
         holder.dishName.setText(dishEntry.getName());
         holder.companyName.setText(dishEntry.getName());
@@ -68,11 +77,20 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 //            Picasso.get().load(dishEntry.getImage()).into(holder.dishImage);
 //        }
 
+        //check if view is expanded
+        final boolean isExpanded = expandState.get(position);
+        //holder.buttonLayout.setRotation(expandState.get(i) ? 180f : 0f);
+
+        @Override
+        public void onClick ( final View v){
+            onClickButton(holder.expandableLayout, holder.buttonLayout, i);
+        }
+
+
     }
 
 
     /**
-     *
      * @return items number in the dishEntry array
      */
     @Override
@@ -86,6 +104,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
     /**
      * updates the data set for the adapter
+     *
      * @param dishEntries dishes to be displayed
      */
     public void swapDishes(List<DishEntry> dishEntries) {
@@ -108,12 +127,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * a cache of the child views for a forecast item. It's also a convenient place to set an
      * OnClickListener, since it has access to the adapter and the views.
      */
-    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View
-            .OnClickListener {
+    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder  {
         ImageView dishImage;
         ImageButton favoriteStar;
         TextView dishName;
         TextView companyName;
+        ConstraintLayout card_view1;
 
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
@@ -122,19 +141,39 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             favoriteStar = itemView.findViewById(R.id.star);
             dishName = itemView.findViewById(R.id.mainpage_dish_name);
             companyName = itemView.findViewById(R.id.mainpage_company_name);
-            itemView.setOnClickListener(this);
+            card_view1 = itemView.findViewById(R.id.card_view1);
+
+            //itemView.setOnClickListener(this);
         }
 
         /**
          * gets called when clicking on a dish
-         * @param view  the View that was clicked
+         *
+         * @param view the View that was clicked
          */
-        @Override
-        public void onClick(View view) {
-            int itemPosition = getAdapterPosition();
-            DishEntry dishEntry = mDishes.get(getAdapterPosition());
-            mClickHandler.onClick(itemPosition, dishEntry);
+//        @Override
+//        public void onClick(View view) {
+//            int itemPosition = getAdapterPosition();
+//            DishEntry dishEntry = mDishes.get(getAdapterPosition());
+//            mClickHandler.onClick(itemPosition, dishEntry);
+//
+//        }
 
+
+    }
+
+    private void onClickButton(final LinearLayout expandableLayout, final RelativeLayout buttonLayout, final int i) {
+
+        //Simply set View to Gone if not expanded
+        //Not necessary but I put simple rotation on button layout
+        if (expandableLayout.getVisibility() == View.VISIBLE) {
+            //createRotateAnimator(buttonLayout, 180f, 0f).start();
+            expandableLayout.setVisibility(View.GONE);
+            expandState.put(i, false);
+        } else {
+            //createRotateAnimator(buttonLayout, 0f, 180f).start();
+            expandableLayout.setVisibility(View.VISIBLE);
+            expandState.put(i, true);
         }
     }
 }

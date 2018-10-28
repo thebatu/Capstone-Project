@@ -13,7 +13,6 @@ import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,18 +66,21 @@ public class HomeFoodieNetworkDataSource {
 
         DishDao dishDao= HomeFoodieDatabase.getInstance(mContext).dishDao();
         dishDao.insertDish(
-                new DishEntry(1, "my dish", 7));
+                new DishEntry(1, "SLIM DISH", 7));
 
+        LiveData<List<DishEntry>> list2 = dishDao.getAllDishes();
+
+        Toast.makeText(mContext, "inserted a dish" , Toast.LENGTH_LONG).show();
+
+        dishDao = HomeFoodieDatabase.getInstance(mContext).dishDao();
+
+        LiveData<List<UserEntry> > bbb= userDao.getAllUsers();;
+
+        Log.d("test", "myList" + bbb.toString());
 
         LiveData<List<DishEntry>> dishesList =  dishDao.getAllDishes();
 
-
-
-        Toast.makeText(mContext, "inserted a dish" + dishesList.getValue(), Toast.LENGTH_LONG).show();
-
-        mDownloadedDishesList.postValue(dishesList);
     }
-
 
     public LiveData<DishEntry[]> getLatestDishes() {
         fetchData();

@@ -1,7 +1,6 @@
 package com.example.bats.homefoodie;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
@@ -9,7 +8,6 @@ import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
 
-import java.util.Date;
 import java.util.List;
 
 public class HomefoodieRepository {
@@ -54,12 +52,10 @@ public class HomefoodieRepository {
                 sInstance = new HomefoodieRepository( dishDao, userDao, homeFoodieNetworkDataSource,
                 executors);
                 Log.d(LOG_TAG, "Made new repository");
-
             }
         }
         return sInstance;
     }
-
 
      /**
      * Deletes old dishes data

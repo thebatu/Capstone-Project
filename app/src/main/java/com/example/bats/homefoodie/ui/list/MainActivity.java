@@ -1,20 +1,27 @@
 package com.example.bats.homefoodie.ui.list;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
+import com.example.bats.homefoodie.database.HomeFoodieDatabase;
+import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DishesAdapter
         .DishesAdapterOnItemClickHandler {
@@ -31,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter
     //private MainActivityViewModel mViewModel;
 
     UserDao userDao;
+    DishDao dishDao;
     Context context;
 
     @Override
@@ -102,6 +110,27 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter
     }
 
 
+    Thread thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dishDao = HomeFoodieDatabase.getInstance(context).dishDao();
+
+                    LiveData<List<UserEntry> > bbb= userDao.getAllUsers();;
+
+                    Log.d("test", "myList" + bbb.toString());
+
+                    Toast.makeText(context, bbb.toString(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+            thread.start();
+
+        }
+    });
 
 
 

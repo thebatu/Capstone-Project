@@ -1,7 +1,5 @@
 package com.example.bats.homefoodie.ui.list;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
@@ -19,10 +17,13 @@ import java.util.List;
  */
 public class DishesViewModel extends ViewModel {
 
+    //reference to the repository {@link HomefoodieRepository }
     private HomefoodieRepository mHomeFoodieRepository;
+
+    // List of dishes which will be populated from the repository in the constructor of this call
     private LiveData<List<DishEntry>> mAllDishes;
 
-
+    //Constructor
     public DishesViewModel(HomefoodieRepository repository) {
         //the repository instance.
         mHomeFoodieRepository = repository;
@@ -30,7 +31,7 @@ public class DishesViewModel extends ViewModel {
         mAllDishes = mHomeFoodieRepository.getAllDishes();
     }
 
-    /**getAllDishes
+    /**
      * Insert a DishEntry to the database, local or distant using the repository.class
      * as a proxy
      */
@@ -38,7 +39,7 @@ public class DishesViewModel extends ViewModel {
         mHomeFoodieRepository.insert(dish);
     }
 
-    //getter
+    //getter for all the dishes from the repository
     public LiveData<List<DishEntry>> getAllDishes() {
         return mAllDishes;
     }

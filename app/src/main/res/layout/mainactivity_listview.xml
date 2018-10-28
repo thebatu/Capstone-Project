@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="8dp"
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="4dp">
 
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="369dp"
-        android:layout_height="229dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/card_view1"
+        android:layout_width="match_parent"
+        android:layout_height="415dp">
 
         <ImageButton
             android:id="@+id/star"
             android:layout_width="59dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/btn_star"
@@ -32,50 +29,74 @@
 
         <ImageView
             android:id="@+id/mainpage_image"
-            android:layout_width="345dp"
+            android:layout_width="0dp"
             android:layout_height="148dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@color/cardview_light_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/mainpage_dish_name"
             android:layout_width="wrap_content"
-            android:layout_height="21dp"
-            android:layout_marginStart="52dp"
-            android:text="TextView"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/app_name"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="178dp" />
+            app:layout_constraintTop_toBottomOf="@+id/mainpage_image" />
 
         <TextView
             android:id="@+id/mainpage_company_name"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:text="TextView"
+            android:text="@string/app_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainpage_dish_name" />
+
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/price_int" />
+
+        <TextView
+            android:id="@+id/price_int"
+            android:layout_width="39dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="7 $"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mainpage_image" />
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            app:layout_constraintTop_toBottomOf="@+id/card_view1">
 
-    </android.support.v7.widget.CardView>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imageView_Owner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <RatingBar
-        android:id="@+id/rating_bar"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView" />
+            <TextView
+                android:id="@+id/dish_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name" />
 
-</android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v7.widget.CardView>
