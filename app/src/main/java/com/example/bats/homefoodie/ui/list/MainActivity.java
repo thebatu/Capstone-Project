@@ -23,8 +23,7 @@ import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DishesAdapter
-        .DishesAdapterOnItemClickHandler {
+public class MainActivity extends AppCompatActivity  {
 
     DishesViewModel mDishesViewModel;
 
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter
     private ProgressBar mLoadingIndicator;
 
     //private MainActivityViewModel mViewModel;
-
     UserDao userDao;
     DishDao dishDao;
     Context context;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter
         mDishesRecyclerView.setLayoutManager(layoutManager);
         mDishesRecyclerView.setHasFixedSize(true);
 
-        mDishesAdapter = new DishesAdapter(this, this);
+        mDishesAdapter = new DishesAdapter(this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
@@ -137,11 +135,11 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter
     /**
      * handles clicks on an item. clicks are sent from the dishes adapter.
      */
-    @Override
-    public void onClick(int clickedOnPos, DishEntry dish) {
-        Toast.makeText(this, "Clicked on a dish", Toast.LENGTH_LONG).show();
-
-    }
+//    @Override
+//    public void onClick(int clickedOnPos, DishEntry dish) {
+//        Toast.makeText(this, "Clicked on a dish", Toast.LENGTH_LONG).show();
+//
+//    }
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.bats.homefoodie.ui.list;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -8,6 +9,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,18 +28,21 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
     private final Context mContext;
     private List<DishEntry> mDishes;
-    private final DishesAdapterOnItemClickHandler mClickHandler;
+    //private final DishesAdapterOnItemClickHandler mClickHandler;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
 
     //constructor
-    public DishesAdapter(Context context, DishesAdapterOnItemClickHandler clickHandler) {
+    public DishesAdapter(Context context ) {
         mContext = context;
-        mClickHandler = clickHandler;
+        //mClickHandler = clickHandler;
         //set initial expanded state to false
-        for (int i = 0; i < mDishes.size(); i++) {
-            expandState.append(i, false);
+        if (mDishes != null){
+            for (int i = 0; i < mDishes.size(); i++) {
+                expandState.append(i, false);
+            }
         }
+
     }
 
     /**
@@ -68,6 +73,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     public void onBindViewHolder(@NonNull DishesAdapter.DishesAdapterViewHolder
                                          holder, int position) {
 
+
         DishEntry dishEntry = mDishes.get(position);
         holder.dishName.setText(dishEntry.getName());
         holder.companyName.setText(dishEntry.getName());
@@ -79,12 +85,17 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
         //check if view is expanded
         final boolean isExpanded = expandState.get(position);
-        //holder.buttonLayout.setRotation(expandState.get(i) ? 180f : 0f);
+        //set the initial state of the expandable section
+        holder.expanded_menu.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.down_arrow.setRotation(expandState.get(position) ? 180f : 0f);
 
-        @Override
-        public void onClick ( final View v){
-            onClickButton(holder.expandableLayout, holder.buttonLayout, i);
-        }
+        holder.down_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(holder.expanded_menu, holder.down_arrow,  position);
+
+            }
+        });
 
 
     }
@@ -115,12 +126,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         }
     }
 
-    /**
-     * click interface
-     */
-    public interface DishesAdapterOnItemClickHandler {
-        void onClick(int clickedOnPos, DishEntry dish);
-    }
+//    /**
+//     * click interface
+//     */
+//    public interface DishesAdapterOnItemClickHandler {
+//        void onClick(int clickedOnPos, DishEntry dish);
+//    }
 
     /**
      * A ViewHolder is a required part of the pattern for RecyclerViews. It mostly behaves as
@@ -133,6 +144,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         TextView dishName;
         TextView companyName;
         ConstraintLayout card_view1;
+        View down_arrow;
+        ConstraintLayout expanded_menu;
 
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
@@ -142,6 +155,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             dishName = itemView.findViewById(R.id.mainpage_dish_name);
             companyName = itemView.findViewById(R.id.mainpage_company_name);
             card_view1 = itemView.findViewById(R.id.card_view1);
+            down_arrow = itemView.findViewById(R.id.down_arrow);
+            expanded_menu = itemView.findViewById(R.id.expanded_menu);
 
             //itemView.setOnClickListener(this);
         }
@@ -159,21 +174,40 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 //
 //        }
 
-
     }
 
-    private void onClickButton(final LinearLayout expandableLayout, final RelativeLayout buttonLayout, final int i) {
+    /**
+     * handles click on the arrow to expand cardView. it sets visibility to hidden or visible
+     * calls the method to rotate the arrow.
+     * @param expandableLayout the layout to hide or show
+     * @param buttonLayout the button to rotate
+     * @param position position to add to the list of corresponding positions{@link
+     * SparseBooleanArray expandState}
+     */
+    private void onClickButton(final ConstraintLayout expandableLayout,
+                               final View buttonLayout, final int position) {
 
         //Simply set View to Gone if not expanded
-        //Not necessary but I put simple rotation on button layout
+        //Not necessary but I put a simple rotation on button layout
         if (expandableLayout.getVisibility() == View.VISIBLE) {
-            //createRotateAnimator(buttonLayout, 180f, 0f).start();
+            createRotateAnimator(buttonLayout, 180f, 0f).start();
             expandableLayout.setVisibility(View.GONE);
-            expandState.put(i, false);
+            expandState.put(position, false);
         } else {
-            //createRotateAnimator(buttonLayout, 0f, 180f).start();
+            createRotateAnimator(buttonLayout, 0f, 180f).start();
             expandableLayout.setVisibility(View.VISIBLE);
-            expandState.put(i, true);
+            expandState.put(position, true);
         }
     }
+
+    //Code to rotate button
+    private ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
+        animator.setDuration(300);
+        animator.setInterpolator(new LinearInterpolator());
+        return animator;
+    }
+
+
+
 }
