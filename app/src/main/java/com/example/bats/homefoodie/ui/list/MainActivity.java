@@ -15,16 +15,20 @@ import android.widget.Toast;
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
-import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  {
+/**
+ * MainActivity that displays dishes and handles clicks on dishes.
+ */
+public class MainActivity extends AppCompatActivity implements DishesAdapter.OnItemClickListener  {
 
+    //mainActivity viewModel
     DishesViewModel mDishesViewModel;
 
     //adapter related declarations
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity  {
     private RecyclerView mDishesRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
 
+    //progressbar indicator
     private ProgressBar mLoadingIndicator;
 
     //private MainActivityViewModel mViewModel;
@@ -54,15 +59,19 @@ public class MainActivity extends AppCompatActivity  {
         mDishesRecyclerView.setLayoutManager(layoutManager);
         mDishesRecyclerView.setHasFixedSize(true);
 
-        mDishesAdapter = new DishesAdapter(this);
+        mDishesAdapter = new DishesAdapter(this, this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-
         mDishesViewModel.getAllDishes().observe(this, dishEateries -> {
+
+            //assert dishEateries != null;
+//            list.add(dishEateries.forEach(DishEntry::getId));
+
             mDishesAdapter.swapDishes(dishEateries);
+
             if (mPosition == RecyclerView.NO_POSITION) {
                 mPosition = 0;
             }
@@ -74,6 +83,8 @@ public class MainActivity extends AppCompatActivity  {
             else showLoading();
 
         });
+
+
 
     }
 
@@ -122,7 +133,6 @@ public class MainActivity extends AppCompatActivity  {
                     Log.d("test", "myList" + bbb.toString());
 
                     Toast.makeText(context, bbb.toString(), Toast.LENGTH_LONG).show();
-
                 }
             });
             thread.start();
@@ -130,16 +140,17 @@ public class MainActivity extends AppCompatActivity  {
         }
     });
 
-
-
     /**
-     * handles clicks on an item. clicks are sent from the dishes adapter.
+     * Callback for clicks on a dish, the interface is declared in the adapter.
+     * @param id id of the dish.
+     * @param position position of the dish returned from the adapter.
      */
-//    @Override
-//    public void onClick(int clickedOnPos, DishEntry dish) {
-//        Toast.makeText(this, "Clicked on a dish", Toast.LENGTH_LONG).show();
-//
-//    }
+    @Override
+    public void onItemClick(int id, int position) {
+        Toast.makeText(context, "Clicked on item" + position + "  " + id, Toast.LENGTH_LONG).show();
+
+    }
+
 }
 
 

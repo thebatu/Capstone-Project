@@ -1,6 +1,5 @@
 package com.example.bats.homefoodie.utilities;
 
-
 import android.content.Context;
 
 import com.example.bats.homefoodie.AppExecutors;
@@ -24,7 +23,7 @@ public class InjectorUtils {
                 HomeFoodieNetworkDataSource.getInstance(context.getApplicationContext(), executors);
 
         return HomefoodieRepository.getsInstance(database.dishDao(), database.userDao(),
-                networkDataSource, executors);
+                database.ingredientDao(), networkDataSource, executors);
     }
 
     public static HomeFoodieNetworkDataSource provideNetworkDataSource(Context context) {

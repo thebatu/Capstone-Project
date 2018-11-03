@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
 
@@ -18,16 +20,18 @@ public class HomefoodieRepository {
     private static HomefoodieRepository sInstance;
     private DishDao mDishDao;
     private UserDao mUserDao;
+    private IngredientDao mIngredientDao;
     private HomeFoodieNetworkDataSource mHomeFoodieNetworkDataSource;
     private AppExecutors mExecutors;
     private boolean mInitialized = false;
 
 
-    public HomefoodieRepository(final DishDao mDishDao, UserDao mUserDao,
+    public HomefoodieRepository(final DishDao mDishDao, UserDao mUserDao, IngredientDao ingredientDAO,
                                 HomeFoodieNetworkDataSource mHomeFoodieNetworkDataSource,
                                 final AppExecutors mExecutors) {
         this.mDishDao = mDishDao;
         this.mUserDao = mUserDao;
+        this.mIngredientDao = ingredientDAO;
         this.mHomeFoodieNetworkDataSource = mHomeFoodieNetworkDataSource;
         this.mExecutors = mExecutors;
 
@@ -44,30 +48,36 @@ public class HomefoodieRepository {
     }
 
     public synchronized static HomefoodieRepository getsInstance(DishDao dishDao, UserDao userDao,
-                                          HomeFoodieNetworkDataSource homeFoodieNetworkDataSource,
-                                                                 AppExecutors executors ) {
+                                                                 IngredientDao ingredientDAO,
+                                                                 HomeFoodieNetworkDataSource homeFoodieNetworkDataSource,
+                                                                 AppExecutors executors) {
         Log.d(LOG_TAG, "Getting the repository");
-        if (sInstance == null){
+        if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new HomefoodieRepository( dishDao, userDao, homeFoodieNetworkDataSource,
-                executors);
+                sInstance = new HomefoodieRepository(dishDao, userDao, ingredientDAO,
+                        homeFoodieNetworkDataSource, executors);
                 Log.d(LOG_TAG, "Made new repository");
             }
         }
         return sInstance;
     }
 
-     /**
+    /**
      * Deletes old dishes data
      */
     private void deleteOldData() {
         mDishDao.deleteRepo();
     }
 
+    public LiveData<List<DishEntry>> getAllDishes() {
+        return mDishDao.getAllDishes();
+    }
 
-    public LiveData<List<DishEntry>> getAllDishes(){ return mDishDao.getAllDishes(); }
+    public void insert(DishEntry dish) {
+        mDishDao.insertDish(dish);
+    }
 
-    public void insert(DishEntry dish){ mDishDao.insertDish(dish); }
-
-
+    public LiveData<List<Ingredient>> getIngredientForDish(DishEntry dish) {
+       return mIngredientDao.getIngredientsForDish(dish.getId());
+    }
 }

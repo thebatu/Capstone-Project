@@ -10,14 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishIngredients;
 
 import java.util.List;
 
@@ -30,11 +30,13 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     private List<DishEntry> mDishes;
     //private final DishesAdapterOnItemClickHandler mClickHandler;
     private SparseBooleanArray expandState = new SparseBooleanArray();
+    OnItemClickListener onItemClickListener;
 
 
     //constructor
-    public DishesAdapter(Context context ) {
+    public DishesAdapter(Context context, OnItemClickListener listener ) {
         mContext = context;
+        onItemClickListener = listener;
         //mClickHandler = clickHandler;
         //set initial expanded state to false
         if (mDishes != null){
@@ -42,8 +44,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
                 expandState.append(i, false);
             }
         }
-
     }
+
+
+    interface OnItemClickListener{
+        void onItemClick(int id, int position);
+    }
+
+
 
     /**
      * @param viewGroup The ViewGroup that these ViewHolders are contained within
@@ -75,6 +83,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
 
         DishEntry dishEntry = mDishes.get(position);
+
+        DishIngredients dishIngredients = dishEntry.getDishIng();
+
         holder.dishName.setText(dishEntry.getName());
         holder.companyName.setText(dishEntry.getName());
 
@@ -89,14 +100,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         holder.expanded_menu.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.down_arrow.setRotation(expandState.get(position) ? 180f : 0f);
 
-        holder.down_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickButton(holder.expanded_menu, holder.down_arrow,  position);
+        holder.down_arrow.setOnClickListener(view -> onClickButton(
+                holder.expanded_menu, holder.down_arrow,  position));
 
-            }
-        });
-
+        holder.btn_transperent.setOnClickListener(view -> onClickButton(
+                holder.expanded_menu, holder.btn_transperent,  position));
 
     }
 
@@ -138,7 +146,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * a cache of the child views for a forecast item. It's also a convenient place to set an
      * OnClickListener, since it has access to the adapter and the views.
      */
-    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder  {
+    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         ImageView dishImage;
         ImageButton favoriteStar;
         TextView dishName;
@@ -146,6 +154,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         ConstraintLayout card_view1;
         View down_arrow;
         ConstraintLayout expanded_menu;
+        Button btn_transperent;
 
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
@@ -157,8 +166,15 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             card_view1 = itemView.findViewById(R.id.card_view1);
             down_arrow = itemView.findViewById(R.id.down_arrow);
             expanded_menu = itemView.findViewById(R.id.expanded_menu);
+            btn_transperent = itemView.findViewById(R.id.btn_transparent);
+            itemView.setOnClickListener(this);
+        }
 
-            //itemView.setOnClickListener(this);
+        @Override
+        public void onClick(View view) {
+            int itemPosition = getAdapterPosition();
+            DishEntry dishEntry = mDishes.get(getAdapterPosition());
+            onItemClickListener.onItemClick(itemPosition, dishEntry.getId());
         }
 
         /**

@@ -10,6 +10,9 @@ import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
+import com.example.bats.homefoodie.database.dishDatabase.DishIngredients;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
@@ -63,10 +66,16 @@ public class HomeFoodieNetworkDataSource {
         //LiveData<List<UserEntry>> entry = userDao.getAllUsers();
         //Log.d("test", "inserted a user" );
 
+//        List<DishIngredients> bb = (List<DishIngredients>) new DishIngredients("Rice", "7 kilos"  );
+        DishIngredients dishIngredients = new DishIngredients("rice", "7 kilos");
 
-        DishDao dishDao= HomeFoodieDatabase.getInstance(mContext).dishDao();
+        DishDao dishDao = HomeFoodieDatabase.getInstance(mContext).dishDao();
         dishDao.insertDish(
-                new DishEntry(1, "SLIM DISH", 7));
+                new DishEntry(1, "SLIM DISH", 7, dishIngredients ));
+
+        IngredientDao ingredientDao = HomeFoodieDatabase.getInstance(mContext).ingredientDao();
+        ingredientDao.insertIngredient( new Ingredient(1, "rice", "7 kilos"));
+
 
         LiveData<List<DishEntry>> list2 = dishDao.getAllDishes();
 

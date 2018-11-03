@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
@@ -17,7 +19,7 @@ import com.example.bats.homefoodie.database.userDatabase.UserEntry;
  * {@link HomeFoodieDatabase} database for the application including a table for{@link UserEntry}
  * with the DAO {@link UserDao}.
  */
-@Database(entities = {UserEntry.class, DishEntry.class}, version = 1)
+@Database(entities = {UserEntry.class, DishEntry.class, Ingredient.class}, version = 1)
 public abstract class HomeFoodieDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = HomeFoodieDatabase.class.getSimpleName();
@@ -44,6 +46,7 @@ public abstract class HomeFoodieDatabase extends RoomDatabase {
     //the associated DAOs for the database
     public abstract UserDao userDao();
     public abstract DishDao dishDao();
+    public abstract IngredientDao ingredientDao();
 
 
 
