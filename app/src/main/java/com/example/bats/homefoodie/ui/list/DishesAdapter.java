@@ -17,14 +17,13 @@ import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.DishIngredients;
 
 import java.util.List;
 
 /**
  * Exposes a list of dishes from a list of {@link DishEntry} to a {@link RecyclerView}.
  */
-public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
+public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
     private List<DishEntry> mDishes;
@@ -67,6 +66,18 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         int layoutId = (R.layout.mainactivity_listview);
         View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
         return new DishesAdapterViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int viewType) {
+        switch (viewType){
+            case 0 :
+                return new this.viewType;
+            case 1 :
+                return new this.viewType;
+
+        }
+
     }
 
 

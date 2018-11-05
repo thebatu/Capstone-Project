@@ -13,8 +13,8 @@ import android.arch.persistence.room.PrimaryKey;
 public class Ingredient {
 
     @PrimaryKey
-    private int id;
-    private int dishId;
+    private int id;  // Ingredient id
+    private int dishId;  // dish id
     private String quantity;
     private String name;
 

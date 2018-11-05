@@ -23,8 +23,8 @@ public interface DishDao {
      * * values in the table change.
      * @return users
      */
-    @Query("SELECT * FROM dish")
-    LiveData<List<DishEntry>> getAllDishes();
+    @Query("SELECT * FROM dish ")
+    LiveData<List<DishModelWithIngredients>> getAllDisheswithIngredients();
 
     /**
      * Selects a dish form the database
@@ -49,6 +49,9 @@ public interface DishDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInset(DishEntry... dish);
+
+    @Query("INSERT into ingredient where ingredient.dishID = dishEntry")
+    void insertIngredient(DishEntry dishEntry, DishModelWithIngredients dishIngredients);
 
 
 

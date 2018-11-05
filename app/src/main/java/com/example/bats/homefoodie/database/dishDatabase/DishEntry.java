@@ -1,7 +1,6 @@
 package com.example.bats.homefoodie.database.dishDatabase;
 
 
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
@@ -20,14 +19,11 @@ public class DishEntry {
     private int userId;
     private String name;
     private int price;
-    @Embedded
-    private DishIngredients dishIng;
 
-    public DishEntry(int userId, String name, int price, DishIngredients dishIng) {
+    public DishEntry(int userId, String name, int price) {
         this.userId = userId;
         this.name = name;
         this.price = price;
-        this.dishIng = dishIng;
     }
 
     public int getId() {
@@ -62,12 +58,5 @@ public class DishEntry {
         this.price = price;
     }
 
-    public DishIngredients getDishIng() {
-        return dishIng;
-    }
-
-    public void setDishIng(DishIngredients dishIng) {
-        this.dishIng = dishIng;
-    }
 
 }
