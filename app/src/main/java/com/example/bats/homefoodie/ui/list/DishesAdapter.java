@@ -17,16 +17,18 @@ import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 
 import java.util.List;
 
 /**
  * Exposes a list of dishes from a list of {@link DishEntry} to a {@link RecyclerView}.
  */
-public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
 
     private final Context mContext;
-    private List<DishEntry> mDishes;
+    private List<DishWithIngredients> mDishes;
     //private final DishesAdapterOnItemClickHandler mClickHandler;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     OnItemClickListener onItemClickListener;
@@ -50,8 +52,6 @@ public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         void onItemClick(int id, int position);
     }
 
-
-
     /**
      * @param viewGroup The ViewGroup that these ViewHolders are contained within
      * @param viewType  If your RecyclerView has more than one type of item we
@@ -60,45 +60,24 @@ public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      */
     @NonNull
     @Override
-    public DishesAdapter.DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup,
-                                                                    int viewType) {
-
+    public DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         int layoutId = (R.layout.mainactivity_listview);
         View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
         return new DishesAdapterViewHolder(view);
     }
 
+
+
+
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int viewType) {
-        switch (viewType){
-            case 0 :
-                return new this.viewType;
-            case 1 :
-                return new this.viewType;
+    public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
 
-        }
+        DishWithIngredients dishEntry = mDishes.get(position);
 
-    }
+        Ingredient ingredient = dishEntry.ingredients.get(position);
 
-
-    /**
-     * @param holder   The ViewHolder which should be updated to represent the
-     *                 contents of the item at
-     *                 the given position in the
-     *                 data set.
-     * @param position The position of the item within the adapter's data set
-     */
-    @Override
-    public void onBindViewHolder(@NonNull DishesAdapter.DishesAdapterViewHolder
-                                         holder, int position) {
-
-
-        DishEntry dishEntry = mDishes.get(position);
-
-        DishIngredients dishIngredients = dishEntry.getDishIng();
-
-        holder.dishName.setText(dishEntry.getName());
-        holder.companyName.setText(dishEntry.getName());
+        holder.dishName.setText(dishEntry.dishEntry.getName());
+        holder.companyName.setText(dishEntry.dishEntry.getName());
 
         //Load image if exists otherwise load a place holder
 //        if (!dishEntry.getImage().isEmpty()) {
@@ -116,8 +95,16 @@ public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         holder.btn_transperent.setOnClickListener(view -> onClickButton(
                 holder.expanded_menu, holder.btn_transperent,  position));
-
     }
+
+    /**
+     * @param holder   The ViewHolder which should be updated to represent the
+     *                 contents of the item at
+     *                 the given position in the
+     *                 data set.
+     * @param position The position of the item within the adapter's data set
+     */
+
 
 
     /**
@@ -137,7 +124,7 @@ public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
      *
      * @param dishEntries dishes to be displayed
      */
-    public void swapDishes(List<DishEntry> dishEntries) {
+    public void swapDishes(List<DishWithIngredients> dishEntries) {
         //if there was no dish data, then recreate all of the list
         if (mDishes == null) {
             mDishes = dishEntries;
@@ -184,8 +171,9 @@ public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         public void onClick(View view) {
             int itemPosition = getAdapterPosition();
-            DishEntry dishEntry = mDishes.get(getAdapterPosition());
-            onItemClickListener.onItemClick(itemPosition, dishEntry.getId());
+            DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
+
+            onItemClickListener.onItemClick(itemPosition, dishEntry.dishEntry.getId());
         }
 
         /**

@@ -5,9 +5,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
+import com.example.bats.homefoodie.ui.detail.DishDetailActivity;
 
 import java.util.List;
 
@@ -24,13 +26,14 @@ public interface DishDao {
      * @return users
      */
     @Query("SELECT * FROM dish ")
-    LiveData<List<DishModelWithIngredients>> getAllDisheswithIngredients();
+    LiveData<List<DishWithIngredients>> getAllDisheswithIngredients();
 
-    /**
-     * Selects a dish form the database
-     * @param userId id of the user to get a dish for
-     * @return a dish
-     */
+
+    @Query("SELECT * FROM ingredient WHERE dishId = :dishId")
+    List<Ingredient> getIngredientsForDish(int dishId);
+
+
+    @Transaction
     @Query("SELECT * FROM dish WHERE userId == :userId")
     LiveData<List<DishEntry>> getDishForUser(int userId);
 
@@ -43,15 +46,50 @@ public interface DishDao {
     void deleteRepo();
 
 
+    //----------------------------------------------------------------------------------------------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDish(DishEntry dish);
+
+    @Insert
+    void insertIngredientsList(List<Ingredient> ingredients);
+
+    default void insertDishWithIngredients(DishEntry dish ){
+        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
+        for (int i = 0; i < ingredients.size(); i++) {
+            ingredients.get(i).setDishId(dish.getId());
+        }
+        insertIngredientsList(ingredients);
+        insertDish(dish);
+    }
+
+
+    @Query(" SELECT * from dish WHERE userId = :id")
+    DishEntry getDishForAUser(int id);
+
+
+    default DishEntry getDishWithIngredient(int id) {
+        DishEntry dish = getDishForAUser(id);
+        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
+        dish.setIngredientList(ingredients);
+        return dish;
+    }
+    //----------------------------------------------------------------------------------------------
+
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInset(DishEntry... dish);
 
-    @Query("INSERT into ingredient where ingredient.dishID = dishEntry")
-    void insertIngredient(DishEntry dishEntry, DishModelWithIngredients dishIngredients);
+
+
+
+
+//    @Query("SELECT * FROM ingredient WHERE dishId =:userId")
+//    public abstract List<Ingredient> getIngredientList(int userId);
+
+
+
+
 
 
 

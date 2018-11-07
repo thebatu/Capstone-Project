@@ -3,10 +3,13 @@ package com.example.bats.homefoodie.database.dishDatabase;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+
+import java.util.List;
 
 @Entity(tableName = "dish", foreignKeys = @ForeignKey(entity = UserEntry.class,
                                                       parentColumns = "id",
@@ -19,6 +22,9 @@ public class DishEntry {
     private int userId;
     private String name;
     private int price;
+
+    @Ignore
+    private List<Ingredient> ingredientList;
 
     public DishEntry(int userId, String name, int price) {
         this.userId = userId;
@@ -56,6 +62,14 @@ public class DishEntry {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void setIngredientList(List<Ingredient> ingredientList) {
+        this.ingredientList = ingredientList;
     }
 
 

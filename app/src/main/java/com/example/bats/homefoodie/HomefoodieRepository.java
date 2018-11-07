@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
@@ -69,8 +70,8 @@ public class HomefoodieRepository {
         mDishDao.deleteRepo();
     }
 
-    public LiveData<List<DishEntry>> getAllDishes() {
-        return mDishDao.getAllDishes();
+    public LiveData<List<DishWithIngredients>> getAllDishes() {
+        return mDishDao.getAllDisheswithIngredients();
     }
 
     public void insert(DishEntry dish) {

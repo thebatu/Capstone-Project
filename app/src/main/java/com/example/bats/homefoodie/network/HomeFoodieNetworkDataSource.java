@@ -10,6 +10,7 @@ import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
@@ -58,25 +59,23 @@ public class HomeFoodieNetworkDataSource {
         //need to create from zero. this is temporary code
         UserDao userDao = HomeFoodieDatabase.getInstance(mContext).userDao();
 
-
+        //create user
         userDao.insertUser(
                 new UserEntry( "batu", "thebatu@gmail.com", "road tofame", true, "Dest Inc"));
 
-        //LiveData<List<UserEntry>> entry = userDao.getAllUsers();
-        //Log.d("test", "inserted a user" );
-
-//        List<DishIngredients> bb = (List<DishIngredients>) new DishIngredients("Rice", "7 kilos"  );
-        DishIngredients dishIngredients = new DishIngredients("rice", "7 kilos");
+        //create an ingredient
 
         DishDao dishDao = HomeFoodieDatabase.getInstance(mContext).dishDao();
-        dishDao.insertDish(
-                new DishEntry(1, "SLIM DISH", 7, dishIngredients ));
+        //insert dish
+        dishDao.insertDish( new DishEntry(1, "fish&chips", 6));
+
+        //dishDao.insertIngredientsList(dishIngredients);
 
         IngredientDao ingredientDao = HomeFoodieDatabase.getInstance(mContext).ingredientDao();
-        ingredientDao.insertIngredient( new Ingredient(1, "rice", "7 kilos"));
+        ingredientDao.insertIngredient( new Ingredient(1, "brown rice", "7 cups"));
 
 
-        LiveData<List<DishEntry>> list2 = dishDao.getAllDishes();
+        LiveData<List<DishWithIngredients>> list2 = dishDao.getAllDisheswithIngredients();
 
         Toast.makeText(mContext, "inserted a dish" , Toast.LENGTH_LONG).show();
 
@@ -86,7 +85,7 @@ public class HomeFoodieNetworkDataSource {
 
         Log.d("test", "myList" + bbb.toString());
 
-        LiveData<List<DishEntry>> dishesList =  dishDao.getAllDishes();
+        //LiveData<List<DishEntry>> dishesList =  dishDao.getAllDishes();
 
     }
 
