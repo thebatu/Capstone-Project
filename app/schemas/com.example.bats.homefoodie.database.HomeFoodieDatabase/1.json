@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "02ea35040959ff12659e056a74b31d36",
+    "identityHash": "73218f9dd200a5984e44860367d9ee6f",
     "entities": [
       {
         "tableName": "user",
@@ -65,7 +65,7 @@
       },
       {
         "tableName": "dish",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER NOT NULL, `name` TEXT, `price` INTEGER NOT NULL, `quantity` TEXT, `title` TEXT, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER NOT NULL, `name` TEXT, `price` INTEGER NOT NULL, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -90,18 +90,6 @@
             "columnName": "price",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "dishIng.quantity",
-            "columnName": "quantity",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dishIng.title",
-            "columnName": "title",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -196,7 +184,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"02ea35040959ff12659e056a74b31d36\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"73218f9dd200a5984e44860367d9ee6f\")"
     ]
   }
 }

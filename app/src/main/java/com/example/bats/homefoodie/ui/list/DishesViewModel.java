@@ -1,10 +1,12 @@
 package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class DishesViewModel extends ViewModel {
     private HomefoodieRepository mHomeFoodieRepository;
 
     // List of dishes which will be populated from the repository in the constructor of this call
-    private LiveData<List<DishEntry>> mAllDishes;
+    private LiveData<List<DishWithIngredients>> mAllDishes;
 
     //Constructor
     public DishesViewModel(HomefoodieRepository repository) {
@@ -29,6 +31,7 @@ public class DishesViewModel extends ViewModel {
         mHomeFoodieRepository = repository;
         //all of my dishes.
         mAllDishes = mHomeFoodieRepository.getAllDishes();
+
     }
 
     /**
@@ -40,7 +43,7 @@ public class DishesViewModel extends ViewModel {
     }
 
     //getter for all the dishes from the repository
-    public LiveData<List<DishEntry>> getAllDishes() {
+    public LiveData<List<DishWithIngredients>> getAllDishes() {
         return mAllDishes;
     }
 

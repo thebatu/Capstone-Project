@@ -20,7 +20,6 @@ import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
