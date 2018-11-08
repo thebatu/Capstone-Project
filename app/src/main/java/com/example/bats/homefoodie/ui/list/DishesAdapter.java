@@ -124,7 +124,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      *
      * @param dishEntries dishes to be displayed
      */
-    public void swapDishes(List<DishWithIngredients> dishEntries) {
+    public void swapDishes(List<DishWithIngredients> dishEntries, List b) {
         //if there was no dish data, then recreate all of the list
         if (mDishes == null) {
             mDishes = dishEntries;

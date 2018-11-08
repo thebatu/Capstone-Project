@@ -1,9 +1,11 @@
 package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +17,15 @@ import android.widget.Toast;
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,22 +70,40 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        mDishesViewModel.getAllDishes().observe(this, dishEateries -> {
+        mDishesViewModel.getAllDishes().observe(this, new Observer<List<DishWithIngredients>>()
+        {
+            @Override
+            public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
+                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
+                ArrayList tt = new ArrayList();
+                a.forEach(o -> );
+
+                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
+                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
+                List d = c.ingredients;
+
+
+
+//                ArrayList b = (ArrayList) o[1];
+
+                //mDishesAdapter.swapDishes(a,b);
+            }
+
 
             //assert dishEateries != null;
 //            list.add(dishEateries.forEach(DishEntry::getId));
 
-            mDishesAdapter.swapDishes(dishEateries);
-
-            if (mPosition == RecyclerView.NO_POSITION) {
-                mPosition = 0;
-            }
-            mDishesRecyclerView.smoothScrollToPosition(mPosition);
-
-            // Show all Dishes list or the loading screen based on whether the dishes data exists
-            // and is loaded
-            if (dishEateries != null && dishEateries.size() != 0) showMainDishDataView();
-            else showLoading();
+//            mDishesAdapter.swapDishes(dishEateries);
+//
+//            if (mPosition == RecyclerView.NO_POSITION) {
+//                mPosition = 0;
+//            }
+//            mDishesRecyclerView.smoothScrollToPosition(mPosition);
+//
+//            // Show all Dishes list or the loading screen based on whether the dishes data exists
+//            // and is loaded
+//            if (dishEateries != null && dishEateries.size() != 0) showMainDishDataView();
+//            else showLoading();
 
         });
 
