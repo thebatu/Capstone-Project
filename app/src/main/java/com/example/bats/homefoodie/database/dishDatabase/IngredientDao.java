@@ -41,4 +41,19 @@ public interface IngredientDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInset(Ingredient... ingredient);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertIngredients(List<Ingredient> ingredients);
+
+
+    default void insertIngredientsForDish(DishEntry dishEntry, List<Ingredient> ingredients){
+
+        for(Ingredient ingredient : ingredients){
+            ingredient.setDishId(dishEntry.getId());
+        }
+
+        insertIngredientsList(ingredients);
+    }
+
+    @Insert
+    void insertIngredientsList(List<Ingredient> ingredients);
 }

@@ -2,6 +2,7 @@ package com.example.bats.homefoodie.database.dishDatabase;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -12,17 +13,26 @@ import android.arch.persistence.room.PrimaryKey;
                                                              indices = {@Index("dishId")})
 public class Ingredient {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;  // Ingredient id
     private int dishId;  // dish id
     private String quantity;
     private String name;
 
+    @Ignore
     public Ingredient(int dishId, String name, String quantity) {
         this.dishId = dishId;
         this.name = name;
         this.quantity = quantity;
     }
+
+    public Ingredient(int id, int dishId, String quantity, String name) {
+        this.id = id;
+        this.dishId = dishId;
+        this.quantity = quantity;
+        this.name = name;
+    }
+
 
     public int getDishId() {
         return dishId;

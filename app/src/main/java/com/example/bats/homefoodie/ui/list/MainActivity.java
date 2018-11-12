@@ -73,19 +73,19 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         {
             @Override
             public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
-                ArrayList tt = new ArrayList();
-                a.forEach(o -> );
-
-                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
-                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
-                List d = c.ingredients;
+//                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
+//                ArrayList tt = new ArrayList();
+//                a.forEach(o -> );
+//
+//                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
+//                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
+//                List d = c.ingredients;
 
 
 
 //                ArrayList b = (ArrayList) o[1];
 
-                //mDishesAdapter.swapDishes(a,b);
+                mDishesAdapter.swapDishes(dishWithIngredients);
             }
 
 

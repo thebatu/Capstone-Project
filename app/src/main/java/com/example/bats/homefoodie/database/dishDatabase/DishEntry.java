@@ -17,6 +17,7 @@ import java.util.List;
                                                       onDelete = ForeignKey.CASCADE),
                                                       indices = {@Index("userId")})
 public class DishEntry {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int userId;
@@ -26,15 +27,26 @@ public class DishEntry {
     @Ignore
     private List<Ingredient> ingredientList;
 
+    @Ignore
     public DishEntry(int userId, String name, int price) {
         this.userId = userId;
         this.name = name;
         this.price = price;
     }
 
-    public int getId() {
-        return id;
+
+    public DishEntry(int id, int userId, String name, int price) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.price = price;
     }
+
+
+
+
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -70,6 +82,9 @@ public class DishEntry {
 
     public void setIngredientList(List<Ingredient> ingredientList) {
         this.ingredientList = ingredientList;
+    }
+    public int getId() {
+        return id;
     }
 
 

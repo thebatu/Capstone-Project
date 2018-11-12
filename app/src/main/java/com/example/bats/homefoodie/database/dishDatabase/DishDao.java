@@ -7,6 +7,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.ui.detail.DishDetailActivity;
@@ -25,6 +27,7 @@ public interface DishDao {
      * * values in the table change.
      * @return users
      */
+    @Transaction
     @Query("SELECT * FROM dish ")
     LiveData<List<DishWithIngredients>> getAllDisheswithIngredients();
 
@@ -36,6 +39,10 @@ public interface DishDao {
     @Transaction
     @Query("SELECT * FROM dish WHERE userId == :userId")
     LiveData<List<DishEntry>> getDishForUser(int userId);
+
+
+    @Query("SELECT * FROM dish WHERE userId == :userId")
+    List<DishEntry> getDish (int userId);
 
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -53,13 +60,25 @@ public interface DishDao {
     @Insert
     void insertIngredientsList(List<Ingredient> ingredients);
 
-    default void insertDishWithIngredients(DishEntry dish ){
-        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
-        for (int i = 0; i < ingredients.size(); i++) {
-            ingredients.get(i).setDishId(dish.getId());
+    //stupid maybe ingredients list is empty
+//    default void insertDishWithIngredients(DishEntry dish){
+//        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
+//        for (int i = 0; i < ingredients.size(); i++) {
+//            ingredients.get(i).setDishId(dish.getId());
+//        }
+//        insertIngredientsList(ingredients);
+//        insertDish(dish);
+//    }
+
+    default void insertIngredientsForDish(DishEntry dishEntry, List<Ingredient> ingredients){
+
+        for(Ingredient ingredient : ingredients){
+            ingredient.setDishId(dishEntry.getId());
+            Log.d("MAG", "ingredient ID " +  ingredient.getId());
+            Log.d("MAG", "the list if " +  ingredient.getName());
         }
+
         insertIngredientsList(ingredients);
-        insertDish(dish);
     }
 
 
@@ -73,19 +92,12 @@ public interface DishDao {
         dish.setIngredientList(ingredients);
         return dish;
     }
-    //----------------------------------------------------------------------------------------------
 
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void bulkInset(DishEntry... dish);
 
-
-
-
-
-//    @Query("SELECT * FROM ingredient WHERE dishId =:userId")
-//    public abstract List<Ingredient> getIngredientList(int userId);
 
 
 

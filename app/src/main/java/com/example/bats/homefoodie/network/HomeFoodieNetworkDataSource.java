@@ -16,6 +16,7 @@ import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,29 +64,51 @@ public class HomeFoodieNetworkDataSource {
         userDao.insertUser(
                 new UserEntry( "batu", "thebatu@gmail.com", "road tofame", true, "Dest Inc"));
 
-        //create an ingredient
+
+
+        DishEntry dishEntry = new DishEntry(1, "fish&chips", 6);
+        DishEntry dishEntry2 = new DishEntry(1, "pizza", 10);
+        DishEntry dishEntry3 = new DishEntry(1, "hamburger", 11);
+        DishEntry dishEntry4 = new DishEntry(1, "chicken wrap", 2212);
+
 
         DishDao dishDao = HomeFoodieDatabase.getInstance(mContext).dishDao();
         //insert dish
-        dishDao.insertDish( new DishEntry(1, "fish&chips", 6));
+        dishDao.insertDish( dishEntry);
+        dishDao.insertDish( dishEntry2);
+        dishDao.insertDish( dishEntry3);
+        dishDao.insertDish( dishEntry4);
+
 
         //dishDao.insertIngredientsList(dishIngredients);
 
-        IngredientDao ingredientDao = HomeFoodieDatabase.getInstance(mContext).ingredientDao();
-        ingredientDao.insertIngredient( new Ingredient(1, "brown rice", "7 cups"));
+//        IngredientDao ingredientDao = HomeFoodieDatabase.getInstance(mContext).ingredientDao();
+//        ingredientDao.bulkInset( new Ingredient(1, "brown rice", "7 cups")
+//        , new Ingredient(1, "red rice", "100 cups"));
 
+        List<DishEntry> dd = dishDao.getDish(1);
 
-        LiveData<List<DishWithIngredients>> list2 = dishDao.getAllDisheswithIngredients();
+        ArrayList tt = new ArrayList();
+        tt.add(new Ingredient(dd.get(0).getId(), "brown rice", "7 cups"));
+        tt.add(new Ingredient(dd.get(1).getId(), "red rice", "300 cups"));
+        tt.add(new Ingredient(dd.get(2).getId(), "meat", "spoons"));
+        tt.add(new Ingredient(dd.get(3).getId(), "chicken", "5 kilos"));
+        Log.d("TAG2", "THE ID for dd 0  " + dd.get(0).getId());
+        Log.d("TAG2", "THE ID for dd 1  " + dd.get(1).getId());
+
+        dishDao.insertIngredientsForDish(dd.get(0),tt);
+        dishDao.insertIngredientsForDish(dd.get(1),tt);
+        dishDao.insertIngredientsForDish(dd.get(2),tt);
+        dishDao.insertIngredientsForDish(dd.get(3),tt);
+
+//        IngredientDao ingredientDao =  HomeFoodieDatabase.getInstance(mContext).ingredientDao();
+//        ingredientDao.insertIngredientsForDish(dishEntry2,tt);
+
+        //LiveData<List<DishWithIngredients>> list2 = dishDao.getAllDisheswithIngredients();
 
         Toast.makeText(mContext, "inserted a dish" , Toast.LENGTH_LONG).show();
 
-        dishDao = HomeFoodieDatabase.getInstance(mContext).dishDao();
-
-        LiveData<List<UserEntry> > bbb= userDao.getAllUsers();;
-
-        Log.d("test", "myList" + bbb.toString());
-
-        //LiveData<List<DishEntry>> dishesList =  dishDao.getAllDishes();
+        //LiveData<List<UserEntry> > bbb= userDao.getAllUsers();
 
     }
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "73218f9dd200a5984e44860367d9ee6f",
+    "identityHash": "856bdaddcdc34d96fac54fcf8147469a",
     "entities": [
       {
         "tableName": "user",
@@ -124,7 +124,7 @@
       },
       {
         "tableName": "ingredient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dishId` INTEGER NOT NULL, `quantity` TEXT, `name` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`dishId`) REFERENCES `dish`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dishId` INTEGER NOT NULL, `quantity` TEXT, `name` TEXT, FOREIGN KEY(`dishId`) REFERENCES `dish`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -155,7 +155,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -184,7 +184,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"73218f9dd200a5984e44860367d9ee6f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"856bdaddcdc34d96fac54fcf8147469a\")"
     ]
   }
 }
