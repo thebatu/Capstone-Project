@@ -67,8 +67,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     }
 
 
-
-
     @Override
     public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
 

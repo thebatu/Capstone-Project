@@ -8,7 +8,9 @@ import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -43,8 +45,17 @@ public class DishesViewModel extends ViewModel {
     }
 
     //getter for all the dishes from the repository
-    public LiveData<List<DishWithIngredients>> getAllDishes() {
-        return mAllDishes;
+    public List<LiveData<List<DishWithIngredients>>> getAllDishes() {
+        LiveData ingredients = Transformations.map(mAllDishes, input ->
+                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().ingredients);
+
+        LiveData dishes = Transformations.map(mAllDishes, input ->
+                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().dishEntry);
+
+        List<LiveData<List<DishWithIngredients>>> result = new ArrayList<>();
+        result.add(ingredients);
+        result.add(dishes);
+        return result;
     }
 
 
