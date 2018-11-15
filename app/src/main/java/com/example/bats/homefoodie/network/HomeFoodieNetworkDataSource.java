@@ -86,8 +86,11 @@ public class HomeFoodieNetworkDataSource {
 //        ingredientDao.bulkInset( new Ingredient(1, "brown rice", "7 cups")
 //        , new Ingredient(1, "red rice", "100 cups"));
 
+
+        //get dishes for a user
         List<DishEntry> dd = dishDao.getDish(1);
 
+        //create and add ingredients to an array
         ArrayList tt = new ArrayList();
         tt.add(new Ingredient(dd.get(0).getId(), "brown rice", "7 cups"));
         tt.add(new Ingredient(dd.get(1).getId(), "red rice", "300 cups"));
@@ -96,6 +99,7 @@ public class HomeFoodieNetworkDataSource {
         Log.d("TAG2", "THE ID for dd 0  " + dd.get(0).getId());
         Log.d("TAG2", "THE ID for dd 1  " + dd.get(1).getId());
 
+        //insert dishes and their corresponding ingredients
         dishDao.insertIngredientsForDish(dd.get(0),tt);
         dishDao.insertIngredientsForDish(dd.get(1),tt);
         dishDao.insertIngredientsForDish(dd.get(2),tt);

@@ -14,24 +14,29 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Exposes a list of dishes from a list of {@link DishEntry} to a {@link RecyclerView}.
  */
-public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
+public class DishesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int INGREDIENT_ID = 1 ;
+    private static final int DISHES_ID = 2 ;
     private final Context mContext;
     private List<DishWithIngredients> mDishes;
     //private final DishesAdapterOnItemClickHandler mClickHandler;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     OnItemClickListener onItemClickListener;
+    private Context context;
 
 
     //constructor
@@ -60,40 +65,132 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      */
     @NonNull
     @Override
-    public DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         int layoutId = (R.layout.mainactivity_listview);
-        View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
-        return new DishesAdapterViewHolder(view);
-    }
+        Context context = viewGroup.getContext();
 
+        switch(viewType){
+            case INGREDIENT_ID: {
+                int layout_ingredients = R.layout.ingredients;
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                View view = layoutInflater.inflate(layout_ingredients, viewGroup, false);
+                return new IngredientsHolder(view);
+            }
+            case DISHES_ID: {
+                int layout_dishes = R.layout.dishes;
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                View view = layoutInflater.inflate(layout_dishes, viewGroup, false);
+                return new DishesHolder(view);
+            }
+        }
+
+        return null;
+    }
 
     @Override
-    public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
-
-        DishWithIngredients dishEntry = mDishes.get(position);
-
-        Ingredient ingredient = dishEntry.ingredients.get(position);
-
-        holder.dishName.setText(dishEntry.dishEntry.getName());
-        holder.companyName.setText(dishEntry.dishEntry.getName());
-
-        //Load image if exists otherwise load a place holder
-//        if (!dishEntry.getImage().isEmpty()) {
-//            Picasso.get().load(dishEntry.getImage()).into(holder.dishImage);
-//        }
-
-        //check if view is expanded
-        final boolean isExpanded = expandState.get(position);
-        //set the initial state of the expandable section
-        holder.expanded_menu.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-        holder.down_arrow.setRotation(expandState.get(position) ? 180f : 0f);
-
-        holder.down_arrow.setOnClickListener(view -> onClickButton(
-                holder.expanded_menu, holder.down_arrow,  position));
-
-        holder.btn_transperent.setOnClickListener(view -> onClickButton(
-                holder.expanded_menu, holder.btn_transperent,  position));
+    public int getItemViewType(int position) {
+        if (position < mDishes.size()) {
+            return INGREDIENT_ID;
+        } else {
+            return DISHES_ID;
+        }
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()){
+            case INGREDIENT_ID: {
+                String ingredient_name = mDishes.get(position).ingredients.get(position).getName();
+                ((IngredientsHolder) holder).ing_name.setText(ingredient_name);
+                break;
+            }
+            case DISHES_ID: {
+                DishWithIngredients dishEntry = mDishes.get(position);
+                ((DishesHolder) holder).dishName.setText(dishEntry.dishEntry.getName());
+                ((DishesHolder) holder).companyName.setText(dishEntry.dishEntry.getName());
+                break;
+            }
+            default:
+                Toast.makeText(context, "Error in Adapter", Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+    public class IngredientsHolder extends RecyclerView.ViewHolder {
+        public TextView ing_name;
+        public IngredientsHolder(@NonNull View itemView) {
+            super(itemView);
+            ing_name = itemView.findViewById(R.id.ing_name);
+
+        }
+    }
+
+
+    public class DishesHolder extends RecyclerView.ViewHolder {
+        ImageView dishImage;
+        ImageButton favoriteStar;
+        TextView dishName;
+        TextView companyName;
+        ConstraintLayout card_view1;
+        View down_arrow;
+        ConstraintLayout expanded_menu;
+        Button btn_transperent;
+
+        public DishesHolder(@NonNull View itemView) {
+            super(itemView);
+            dishImage = itemView.findViewById(R.id.mainpage_image);
+            favoriteStar = itemView.findViewById(R.id.star);
+            dishName = itemView.findViewById(R.id.mainpage_dish_name);
+            companyName = itemView.findViewById(R.id.mainpage_company_name);
+            card_view1 = itemView.findViewById(R.id.card_view1);
+            down_arrow = itemView.findViewById(R.id.down_arrow);
+            expanded_menu = itemView.findViewById(R.id.expanded_menu);
+            btn_transperent = itemView.findViewById(R.id.btn_transparent);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @Override
+//    public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
+//
+//        DishWithIngredients dishEntry = mDishes.get(position);
+//
+//        Ingredient ingredient = dishEntry.ingredients.get(position);
+//
+//
+//        holder.dishName.setText(dishEntry.dishEntry.getName());
+//        holder.companyName.setText(dishEntry.dishEntry.getName());
+//
+//        //Load image if exists otherwise load a place holder
+////        if (!dishEntry.getImage().isEmpty()) {
+////            Picasso.get().load(dishEntry.getImage()).into(holder.dishImage);
+////        }
+//
+//        //check if view is expanded
+//        final boolean isExpanded = expandState.get(position);
+//        //set the initial state of the expandable section
+//        holder.expanded_menu.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+//        holder.down_arrow.setRotation(expandState.get(position) ? 180f : 0f);
+//
+//        holder.down_arrow.setOnClickListener(view -> onClickButton(
+//                holder.expanded_menu, holder.down_arrow,  position));
+//
+//        holder.btn_transperent.setOnClickListener(view -> onClickButton(
+//                holder.expanded_menu, holder.btn_transperent,  position));
+//    }
 
     /**
      * @param holder   The ViewHolder which should be updated to represent the
@@ -127,6 +224,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         //if there was no dish data, then recreate all of the list
         if (mDishes == null) {
             mDishes = dishEntries;
+
+            List<List<Ingredient>> ingredients = new ArrayList<>();
+            mDishes.forEach(dish -> ingredients.add(dish.ingredients));
+
+
             notifyDataSetChanged();
         }
     }
@@ -190,7 +292,22 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
     }
 
-    /**
+
+    public class IngredientsAdapter extends RecyclerView.ViewHolder  {
+        public TextView ing_name;
+
+        public IngredientsAdapter(@NonNull View itemView) {
+            super(itemView);
+            ing_name = itemView.findViewById(R.id.ing_name);
+
+
+        }
+    }
+
+
+
+
+        /**
      * handles click on the arrow to expand cardView. it sets visibility to hidden or visible
      * calls the method to rotate the arrow.
      * @param expandableLayout the layout to hide or show

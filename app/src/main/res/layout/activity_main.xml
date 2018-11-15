@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.example.bats.homefoodie.ui.list.MainActivity"
     >
 
 
@@ -13,6 +14,14 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="8dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainactiviy_recyclerview2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
+
 
 
     <!-- A progress bar that will be shown to users to indicate that weather data is loading -->

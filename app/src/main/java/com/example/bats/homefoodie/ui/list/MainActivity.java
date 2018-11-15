@@ -1,7 +1,9 @@
 package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * MainActivity that displays dishes and handles clicks on dishes.
@@ -69,29 +72,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        mDishesViewModel.getAllDishes().observe(this, new Observer<List<DishWithIngredients>>()
-        {
-            @Override
-            public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-//                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
-//                ArrayList tt = new ArrayList();
-//                a.forEach(o -> );
-//
-//                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
-//                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
-//                List d = c.ingredients;
-
-
-
-//                ArrayList b = (ArrayList) o[1];
-
-                mDishesAdapter.swapDishes(dishWithIngredients);
-            }
-
-
-            //assert dishEateries != null;
+        //assert dishEateries != null;
 //            list.add(dishEateries.forEach(DishEntry::getId));
-
 //            mDishesAdapter.swapDishes(dishEateries);
 //
 //            if (mPosition == RecyclerView.NO_POSITION) {
@@ -104,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
 //            if (dishEateries != null && dishEateries.size() != 0) showMainDishDataView();
 //            else showLoading();
 
-        });
 
-
+        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients ->
+                mDishesAdapter.swapDishes(dishWithIngredients));
 
     }
 

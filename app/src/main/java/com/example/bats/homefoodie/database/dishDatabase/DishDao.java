@@ -60,22 +60,10 @@ public interface DishDao {
     @Insert
     void insertIngredientsList(List<Ingredient> ingredients);
 
-    //stupid maybe ingredients list is empty
-//    default void insertDishWithIngredients(DishEntry dish){
-//        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            ingredients.get(i).setDishId(dish.getId());
-//        }
-//        insertIngredientsList(ingredients);
-//        insertDish(dish);
-//    }
-
     default void insertIngredientsForDish(DishEntry dishEntry, List<Ingredient> ingredients){
 
         for(Ingredient ingredient : ingredients){
             ingredient.setDishId(dishEntry.getId());
-            Log.d("MAG", "ingredient ID " +  ingredient.getId());
-            Log.d("MAG", "the list if " +  ingredient.getName());
         }
 
         insertIngredientsList(ingredients);

@@ -1,16 +1,13 @@
 package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -45,17 +42,30 @@ public class DishesViewModel extends ViewModel {
     }
 
     //getter for all the dishes from the repository
-    public List<LiveData<List<DishWithIngredients>>> getAllDishes() {
-        LiveData ingredients = Transformations.map(mAllDishes, input ->
-                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().ingredients);
+    public LiveData<List<DishWithIngredients>> getAllDishes() {
 
-        LiveData dishes = Transformations.map(mAllDishes, input ->
-                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().dishEntry);
+        return mAllDishes;
 
-        List<LiveData<List<DishWithIngredients>>> result = new ArrayList<>();
-        result.add(ingredients);
-        result.add(dishes);
-        return result;
+//        LiveData ingredients = Transformations.map(mAllDishes, input ->
+//                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().ingredients);
+//
+//        LiveData dishes = Transformations.map(mAllDishes, input ->
+//                Objects.requireNonNull(mAllDishes.getValue()).listIterator().next().dishEntry);
+//
+//        List<LiveData<List<DishWithIngredients>>> result = new ArrayList<>();
+//
+//
+//        List<LiveData> fruitsStringList = new ArrayList<>();
+//        fruitsStringList.add(ingredients);
+//        fruitsStringList.add(dishes);
+//
+//
+//        result.add(ingredients);
+//        result.add(dishes);
+//
+////        result.add(ingredients);
+////        result.add(dishes);
+//        return result;
     }
 
 

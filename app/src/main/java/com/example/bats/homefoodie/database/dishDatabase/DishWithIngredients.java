@@ -11,7 +11,6 @@ public class DishWithIngredients {
     @Embedded
     public DishEntry dishEntry;
 
-
     @Relation(parentColumn = "id", entityColumn = "dishId", entity = Ingredient.class)
     public List<Ingredient> ingredients;
 }
