@@ -1,12 +1,16 @@
 package com.example.bats.homefoodie.ui.detail;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.bats.homefoodie.R;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,7 +18,8 @@ import com.example.bats.homefoodie.R;
 public class DishDetailFragment extends Fragment {
 
     //id of selected dish
-    private int currentDishId;
+    private int userID;
+    DishDetailFragmentViewModel dishDetailFragmentViewModel;
 
 
     @Override
@@ -22,7 +27,11 @@ public class DishDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         assert getArguments() != null;
-        currentDishId = getArguments().getInt("dishID");
+        userID = getArguments().getInt("userID");
+
+        DishDetailFragmentViewModelFactory factory = InjectorUtils.provideDishesFragmentViewModelFactory(getActivity(), userID);
+        dishDetailFragmentViewModel = ViewModelProviders.of(this, factory).get(DishDetailFragmentViewModel.class);
+        DishEntry dishEntry = dishDetailFragmentViewModel.getSingleDishForUser();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dish_detail, container, false);

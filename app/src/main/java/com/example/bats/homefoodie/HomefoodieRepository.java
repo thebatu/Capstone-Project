@@ -74,6 +74,10 @@ public class HomefoodieRepository {
         return mDishDao.getAllDisheswithIngredients();
     }
 
+    public DishEntry getDishForUser(int id){
+        return mDishDao.getDishWithIngredient(id);
+    }
+
     public void insert(DishEntry dish) {
         mDishDao.insertDish(dish);
     }

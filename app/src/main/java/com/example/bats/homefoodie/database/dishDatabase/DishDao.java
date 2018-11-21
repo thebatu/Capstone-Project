@@ -38,7 +38,6 @@ public interface DishDao {
     @Query("SELECT * FROM dish WHERE userId == :userId")
     LiveData<List<DishEntry>> getDishForUser(int userId);
 
-
     @Query("SELECT * FROM dish WHERE userId == :userId")
     List<DishEntry> getDish (int userId);
 
@@ -57,16 +56,6 @@ public interface DishDao {
 
     @Insert
     void insertIngredientsList(List<Ingredient> ingredients);
-
-    //stupid maybe ingredients list is empty
-//    default void insertDishWithIngredients(DishEntry dish){
-//        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            ingredients.get(i).setDishId(dish.getId());
-//        }
-//        insertIngredientsList(ingredients);
-//        insertDish(dish);
-//    }
 
     default void insertIngredientsForDish(DishEntry dishEntry, List<Ingredient> ingredients){
 

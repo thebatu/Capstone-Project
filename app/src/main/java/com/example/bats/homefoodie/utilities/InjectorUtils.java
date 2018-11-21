@@ -7,6 +7,7 @@ import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
+import com.example.bats.homefoodie.ui.detail.DishDetailFragmentViewModelFactory;
 
 /**
  * Provides static methods to inject the various classes needed for HomeFoodie
@@ -37,6 +38,11 @@ public class InjectorUtils {
     public static MainViewModelFactory provideDishesViewModelFactory(Context context) {
         HomefoodieRepository repository = provideRepository(context.getApplicationContext());
         return new MainViewModelFactory(repository);
+    }
+
+    public static DishDetailFragmentViewModelFactory provideDishesFragmentViewModelFactory(Context context, int userID) {
+        HomefoodieRepository repository = provideRepository(context.getApplicationContext());
+        return new DishDetailFragmentViewModelFactory(repository, userID);
     }
 
 

@@ -73,7 +73,12 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         {
             @Override
             public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-                mDishesAdapter.swapDishes(dishWithIngredients);
+                if (dishWithIngredients == null) {
+                    showLoading();
+                }else {
+                    showMainDishDataView();
+                    mDishesAdapter.swapDishes(dishWithIngredients);
+                }
             }
 
         });
@@ -112,16 +117,16 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
 
     /**
      * Callback for clicks on a dish, the interface is declared in the adapter.
-     * @param id id of the dish.
+     * @param userID id of the user who owns the dish.
      * @param position position of the dish returned from the adapter.
      */
     @Override
-    public void onItemClick(int id, int position) {
-        Toast.makeText(context, "Clicked on item " + position + "  " + id, Toast.LENGTH_LONG).show();
+    public void onItemClick(int userID, int position) {
+        Toast.makeText(context, "Clicked on item " + position + "  " + userID, Toast.LENGTH_LONG).show();
 
         //pass the ID of the dish to fragment
         Bundle bundle = new Bundle();
-        bundle.putInt("dishID", id);
+        bundle.putInt("userID", userID);
 
         //create details screen upon click on a dish
         FragmentManager fragmentManager = getSupportFragmentManager();

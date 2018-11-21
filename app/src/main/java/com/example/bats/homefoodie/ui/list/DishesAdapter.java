@@ -163,9 +163,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
          */
         @Override
         public void onClick(View view) {
-            int itemPosition = getAdapterPosition();
+            //int itemPosition = getAdapterPosition();
             DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
-            onItemClickListener.onItemClick(itemPosition, dishEntry.dishEntry.getId());
+            onItemClickListener.onItemClick(dishEntry.dishEntry.getUserId(), dishEntry.dishEntry.getId());
         }
 
     }
