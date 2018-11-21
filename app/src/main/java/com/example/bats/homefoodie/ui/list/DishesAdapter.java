@@ -111,13 +111,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * @return items number in the dishEntry array
      */
     @Override
-    public int getItemCount() {
-        if (mDishes != null) {
-            return mDishes.size();
-        } else {
-            return 0;
-        }
-    }
+    public int getItemCount() { return mDishes == null ? 0 : mDishes.size(); }
 
     /**
      * updates the data set for the adapter
@@ -132,13 +126,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             notifyDataSetChanged();
         }
     }
-
-//    /**
-//     * click interface
-//     */
-//    public interface DishesAdapterOnItemClickHandler {
-//        void onClick(int clickedOnPos, DishEntry dish);
-//    }
 
     /**
      * A ViewHolder is a required part of the pattern for RecyclerViews. It mostly behaves as
@@ -169,26 +156,17 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            int itemPosition = getAdapterPosition();
-            DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
-
-            onItemClickListener.onItemClick(itemPosition, dishEntry.dishEntry.getId());
-        }
-
         /**
          * gets called when clicking on a dish
          *
          * @param view the View that was clicked
          */
-//        @Override
-//        public void onClick(View view) {
-//            int itemPosition = getAdapterPosition();
-//            DishEntry dishEntry = mDishes.get(getAdapterPosition());
-//            mClickHandler.onClick(itemPosition, dishEntry);
-//
-//        }
+        @Override
+        public void onClick(View view) {
+            int itemPosition = getAdapterPosition();
+            DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
+            onItemClickListener.onItemClick(itemPosition, dishEntry.dishEntry.getId());
+        }
 
     }
 

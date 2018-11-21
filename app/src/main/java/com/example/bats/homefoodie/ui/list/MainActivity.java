@@ -1,31 +1,30 @@
 package com.example.bats.homefoodie.ui.list;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.HomeFoodieDatabase;
 import com.example.bats.homefoodie.database.dishDatabase.DishDao;
-import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
+import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * MainActivity that displays dishes and handles clicks on dishes.
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         context = this;
 
         mDishesRecyclerView = findViewById(R.id.mainactiviy_recyclerview);
@@ -73,41 +73,10 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         {
             @Override
             public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-//                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
-//                ArrayList tt = new ArrayList();
-//                a.forEach(o -> );
-//
-//                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
-//                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
-//                List d = c.ingredients;
-
-
-
-//                ArrayList b = (ArrayList) o[1];
-
                 mDishesAdapter.swapDishes(dishWithIngredients);
             }
 
-
-            //assert dishEateries != null;
-//            list.add(dishEateries.forEach(DishEntry::getId));
-
-//            mDishesAdapter.swapDishes(dishEateries);
-//
-//            if (mPosition == RecyclerView.NO_POSITION) {
-//                mPosition = 0;
-//            }
-//            mDishesRecyclerView.smoothScrollToPosition(mPosition);
-//
-//            // Show all Dishes list or the loading screen based on whether the dishes data exists
-//            // and is loaded
-//            if (dishEateries != null && dishEateries.size() != 0) showMainDishDataView();
-//            else showLoading();
-
         });
-
-
-
     }
 
 
@@ -141,27 +110,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     }
 
 
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dishDao = HomeFoodieDatabase.getInstance(context).dishDao();
-
-                    LiveData<List<UserEntry> > bbb= userDao.getAllUsers();;
-
-                    Log.d("test", "myList" + bbb.toString());
-
-                    Toast.makeText(context, bbb.toString(), Toast.LENGTH_LONG).show();
-                }
-            });
-            thread.start();
-
-        }
-    });
-
     /**
      * Callback for clicks on a dish, the interface is declared in the adapter.
      * @param id id of the dish.
@@ -169,53 +117,24 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
      */
     @Override
     public void onItemClick(int id, int position) {
-        Toast.makeText(context, "Clicked on item" + position + "  " + id, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Clicked on item " + position + "  " + id, Toast.LENGTH_LONG).show();
+
+        //pass the ID of the dish to fragment
+        Bundle bundle = new Bundle();
+        bundle.putInt("dishID", id);
+
+        //create details screen upon click on a dish
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DishDetailFragment newFragment = new DishDetailFragment();
+        newFragment.setArguments(bundle);
+
+        fragmentTransaction.add(R.id.container, newFragment).setCustomAnimations
+                (android.R.anim.fade_in, android.R.anim.fade_out)
+                .addToBackStack(null)
+                .commit();
+
 
     }
 
 }
-
-
-
-
-
-/*
-        Executor executor = new Executor() {
-            @Override
-            public void execute(@NonNull Runnable runnable) {
-
-                HomeFoodieDatabase.getInstance(context).userDao()
-                        .insertUser(
-                                new UserEntry( "batu", "thebatu@gmail.com", "road to fame", true,
-                                 "Dest Inc"));
-            }
-
-        };
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    userDao = HomeFoodieDatabase.getInstance(context).userDao();
-
-
-                        userDao.insertUser(
-                                        new UserEntry( "batu", "thebatu@gmail.com", "road to
-                                        fame", true, "Dest Inc"));
-
-
-                         List entry = userDao.getAllUsers();
-                        Log.d("test", "myList" + entry.toString());
-                        Toast.makeText(context, entry.toString(), Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-            }
-        });
-
-        thread.start();
-*/

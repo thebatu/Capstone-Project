@@ -8,10 +8,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.ui.detail.DishDetailActivity;
 
 import java.util.List;
 
