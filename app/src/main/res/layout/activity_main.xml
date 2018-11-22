@@ -27,10 +27,4 @@
         android:visibility="invisible" />
 
 
-
-
-
-
-
-
 </android.support.constraint.ConstraintLayout>

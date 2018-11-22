@@ -87,11 +87,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
 
     /**
      * This method will make the View for the Dishes list data visible and hide the error message
-     * and
-     * loading indicator.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
+     * and loading indicator.
      */
     private void showMainDishDataView() {
         // First, hide the loading indicator
@@ -103,9 +99,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     /**
      * This method will make the loading indicator visible and hide the weather View and error
      * message.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
      */
     private void showLoading() {
         // Then, hide the dishes list data
@@ -138,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
                 (android.R.anim.fade_in, android.R.anim.fade_out)
                 .addToBackStack(null)
                 .commit();
-
 
     }
 
