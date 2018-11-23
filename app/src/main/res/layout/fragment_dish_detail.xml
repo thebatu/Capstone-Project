@@ -5,6 +5,7 @@
     android:name="com.example.bats.homefoodie.ui.detail.DishDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".ui.detail.DishDetailFragment">
 
 
