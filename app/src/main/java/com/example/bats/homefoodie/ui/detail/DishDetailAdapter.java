@@ -28,9 +28,6 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
 {
 
     private DishEntry mDish;
-
-
-
     Context mContext;
 
     public DishDetailAdapter(Context context) {
@@ -43,6 +40,7 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
     public DishesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         int layoutId = (R.layout.detail_ingredient_list);
         View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
+        //ButterKnife.bind(this, view);
         return new DishesAdapterViewHolder(view);
     }
 
@@ -51,6 +49,7 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
         List<Ingredient> ingredient =  mDish.getIngredientList();
 
         holder.tv_ingredients_list.setText(ingredient.get(position).getName());
+        //holder.dish_name.setText(ingredient.get(position).getName());
     }
 
     @Override
@@ -60,29 +59,19 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
 
     public void swapDishes(DishEntry dishEntry){
 
-        Log.d("REC", String.valueOf(dishEntry.getIngredientList()));
-        //mDish.add(dishEntry.getIngredientList());
         mDish = dishEntry;
         notifyDataSetChanged();
-
-
     }
 
-    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder {
-//        TextView dish_name;
-//        TextView dish_price;
-//        TextView kitchen_name;
-//        TextView dish_description;
-        TextView tv_ingredients_list;
 
+    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.ingredients_list)
+        TextView tv_ingredients_list;
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-//            dish_name = itemView.findViewById(R.id.detail_dish_name);
-//            dish_price = itemView.findViewById(R.id.detail_dish_price);
-//            kitchen_name = itemView.findViewById(R.id.detail_kitchen_name);
-//            dish_description = itemView.findViewById(R.id.detail_dish_description);
-            tv_ingredients_list = itemView.findViewById(R.id.ingredients_list);
+            ButterKnife.bind(this, itemView);
         }
     }
 

@@ -1,13 +1,12 @@
 package com.example.bats.homefoodie.ui.list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,15 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.dishDatabase.DishDao;
-import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -34,18 +31,21 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
 
+    @BindView(R.id.mainactiviy_recyclerview)
+    RecyclerView mDishesRecyclerView;
+
     //adapter related declarations
     private DishesAdapter mDishesAdapter;
-    private RecyclerView mDishesRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
 
     //progressbar indicator
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingIndicator;
 
-    //private MainActivityViewModel mViewModel;
-    UserDao userDao;
-    DishDao dishDao;
+    //LinearLayoutManager linearLayoutManager;
     Context context;
+
+    private  final  String FragmentTAG = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +54,24 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         ButterKnife.bind(this);
         context = this;
 
-        mDishesRecyclerView = findViewById(R.id.mainactiviy_recyclerview);
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        //check device orientation
+        int orientation = getResources().getConfiguration().orientation;
 
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        //if horizontal
+        if (orientation == 2) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+            mDishesRecyclerView.setLayoutManager(gridLayoutManager);
+        }
 
-        mDishesRecyclerView.setLayoutManager(layoutManager);
+        //if vertical
+        if (orientation == 1){
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+            mDishesRecyclerView.setLayoutManager(layoutManager);
+        }
+
+
+
         mDishesRecyclerView.setHasFixedSize(true);
 
         mDishesAdapter = new DishesAdapter(this, this);
@@ -69,18 +80,13 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        mDishesViewModel.getAllDishes().observe(this, new Observer<List<DishWithIngredients>>()
-        {
-            @Override
-            public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-                if (dishWithIngredients == null) {
-                    showLoading();
-                }else {
-                    showMainDishDataView();
-                    mDishesAdapter.swapDishes(dishWithIngredients);
-                }
+        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients -> {
+            if (dishWithIngredients == null) {
+                showLoading();
+            }else {
+                showMainDishDataView();
+                mDishesAdapter.swapDishes(dishWithIngredients);
             }
-
         });
     }
 
@@ -127,8 +133,9 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         DishDetailFragment newFragment = new DishDetailFragment();
         newFragment.setArguments(bundle);
 
-        fragmentTransaction.add(R.id.container, newFragment).setCustomAnimations
-                (android.R.anim.fade_in, android.R.anim.fade_out)
+        fragmentTransaction.setCustomAnimations
+                (R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_right,
+                        R.anim.exit_to_right).add(R.id.container, newFragment, FragmentTAG)
                 .addToBackStack(null)
                 .commit();
 
