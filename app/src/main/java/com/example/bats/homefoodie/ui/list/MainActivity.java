@@ -1,31 +1,27 @@
 package com.example.bats.homefoodie.ui.list;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.database.dishDatabase.DishDao;
-import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
-import com.example.bats.homefoodie.database.userDatabase.UserDao;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
+import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * MainActivity that displays dishes and handles clicks on dishes.
@@ -35,32 +31,47 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
 
+    @BindView(R.id.mainactiviy_recyclerview)
+    RecyclerView mDishesRecyclerView;
+
     //adapter related declarations
     private DishesAdapter mDishesAdapter;
-    private RecyclerView mDishesRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
 
     //progressbar indicator
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingIndicator;
 
-    //private MainActivityViewModel mViewModel;
-    UserDao userDao;
-    DishDao dishDao;
+    //LinearLayoutManager linearLayoutManager;
     Context context;
+
+    private  final  String FragmentTAG = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         context = this;
 
-        mDishesRecyclerView = findViewById(R.id.mainactiviy_recyclerview);
-        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        //check device orientation
+        int orientation = getResources().getConfiguration().orientation;
 
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        //if horizontal
+        if (orientation == 2) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+            mDishesRecyclerView.setLayoutManager(gridLayoutManager);
+        }
 
-        mDishesRecyclerView.setLayoutManager(layoutManager);
+        //if vertical
+        if (orientation == 1){
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+            mDishesRecyclerView.setLayoutManager(layoutManager);
+        }
+
+
+
         mDishesRecyclerView.setHasFixedSize(true);
 
         mDishesAdapter = new DishesAdapter(this, this);
@@ -69,55 +80,20 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        mDishesViewModel.getAllDishes().observe(this, new Observer<List<DishWithIngredients>>()
-        {
-            @Override
-            public void onChanged(@Nullable List<DishWithIngredients> dishWithIngredients) {
-//                ArrayList a = (ArrayList) dishWithIngredients; //a is an arraylist of Dishwithingredients
-//                ArrayList tt = new ArrayList();
-//                a.forEach(o -> );
-//
-//                ArrayList b = (ArrayList) a.get(0); //b has ingredients and dishEntry its a DishwithIngredientsobject
-//                DishWithIngredients c =  dishWithIngredients.get(1); //does not include the ingredients
-//                List d = c.ingredients;
-
-
-
-//                ArrayList b = (ArrayList) o[1];
-
+        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients -> {
+            if (dishWithIngredients == null) {
+                showLoading();
+            }else {
+                showMainDishDataView();
                 mDishesAdapter.swapDishes(dishWithIngredients);
             }
-
-
-            //assert dishEateries != null;
-//            list.add(dishEateries.forEach(DishEntry::getId));
-
-//            mDishesAdapter.swapDishes(dishEateries);
-//
-//            if (mPosition == RecyclerView.NO_POSITION) {
-//                mPosition = 0;
-//            }
-//            mDishesRecyclerView.smoothScrollToPosition(mPosition);
-//
-//            // Show all Dishes list or the loading screen based on whether the dishes data exists
-//            // and is loaded
-//            if (dishEateries != null && dishEateries.size() != 0) showMainDishDataView();
-//            else showLoading();
-
         });
-
-
-
     }
 
 
     /**
      * This method will make the View for the Dishes list data visible and hide the error message
-     * and
-     * loading indicator.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
+     * and loading indicator.
      */
     private void showMainDishDataView() {
         // First, hide the loading indicator
@@ -129,9 +105,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     /**
      * This method will make the loading indicator visible and hide the weather View and error
      * message.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
      */
     private void showLoading() {
         // Then, hide the dishes list data
@@ -141,81 +114,31 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     }
 
 
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dishDao = HomeFoodieDatabase.getInstance(context).dishDao();
-
-                    LiveData<List<UserEntry> > bbb= userDao.getAllUsers();;
-
-                    Log.d("test", "myList" + bbb.toString());
-
-                    Toast.makeText(context, bbb.toString(), Toast.LENGTH_LONG).show();
-                }
-            });
-            thread.start();
-
-        }
-    });
-
     /**
      * Callback for clicks on a dish, the interface is declared in the adapter.
-     * @param id id of the dish.
+     * @param userID id of the user who owns the dish.
      * @param position position of the dish returned from the adapter.
      */
     @Override
-    public void onItemClick(int id, int position) {
-        Toast.makeText(context, "Clicked on item" + position + "  " + id, Toast.LENGTH_LONG).show();
+    public void onItemClick(int userID, int position) {
+        Toast.makeText(context, "Clicked on item " + position + "  " + userID, Toast.LENGTH_LONG).show();
+
+        //pass the ID of the dish to fragment
+        Bundle bundle = new Bundle();
+        bundle.putInt("userID", userID);
+
+        //create details screen upon click on a dish
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DishDetailFragment newFragment = new DishDetailFragment();
+        newFragment.setArguments(bundle);
+
+        fragmentTransaction.setCustomAnimations
+                (R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_right,
+                        R.anim.exit_to_right).add(R.id.container, newFragment, FragmentTAG)
+                .addToBackStack(null)
+                .commit();
 
     }
 
 }
-
-
-
-
-
-/*
-        Executor executor = new Executor() {
-            @Override
-            public void execute(@NonNull Runnable runnable) {
-
-                HomeFoodieDatabase.getInstance(context).userDao()
-                        .insertUser(
-                                new UserEntry( "batu", "thebatu@gmail.com", "road to fame", true,
-                                 "Dest Inc"));
-            }
-
-        };
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    userDao = HomeFoodieDatabase.getInstance(context).userDao();
-
-
-                        userDao.insertUser(
-                                        new UserEntry( "batu", "thebatu@gmail.com", "road to
-                                        fame", true, "Dest Inc"));
-
-
-                         List entry = userDao.getAllUsers();
-                        Log.d("test", "myList" + entry.toString());
-                        Toast.makeText(context, entry.toString(), Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-            }
-        });
-
-        thread.start();
-*/

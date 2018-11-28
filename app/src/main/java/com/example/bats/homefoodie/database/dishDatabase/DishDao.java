@@ -8,10 +8,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.ui.detail.DishDetailActivity;
 
 import java.util.List;
 
@@ -40,7 +38,6 @@ public interface DishDao {
     @Query("SELECT * FROM dish WHERE userId == :userId")
     LiveData<List<DishEntry>> getDishForUser(int userId);
 
-
     @Query("SELECT * FROM dish WHERE userId == :userId")
     List<DishEntry> getDish (int userId);
 
@@ -59,16 +56,6 @@ public interface DishDao {
 
     @Insert
     void insertIngredientsList(List<Ingredient> ingredients);
-
-    //stupid maybe ingredients list is empty
-//    default void insertDishWithIngredients(DishEntry dish){
-//        List<Ingredient> ingredients = getIngredientsForDish(dish.getId());
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            ingredients.get(i).setDishId(dish.getId());
-//        }
-//        insertIngredientsList(ingredients);
-//        insertDish(dish);
-//    }
 
     default void insertIngredientsForDish(DishEntry dishEntry, List<Ingredient> ingredients){
 

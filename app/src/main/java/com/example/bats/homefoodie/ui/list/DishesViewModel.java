@@ -1,7 +1,6 @@
 package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.bats.homefoodie.HomefoodieRepository;

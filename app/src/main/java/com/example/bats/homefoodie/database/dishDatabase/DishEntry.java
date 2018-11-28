@@ -23,23 +23,29 @@ public class DishEntry {
     private int userId;
     private String name;
     private int price;
+    private String description;
+    private String kitchen_name;
 
     @Ignore
     private List<Ingredient> ingredientList;
 
     @Ignore
-    public DishEntry(int userId, String name, int price) {
+    public DishEntry(int userId, String name, int price, String description, String kitchen_name) {
         this.userId = userId;
         this.name = name;
         this.price = price;
+        this.description = description;
+        this.kitchen_name = kitchen_name;
     }
 
 
-    public DishEntry(int id, int userId, String name, int price) {
+    public DishEntry(int id, int userId, String name, int price, String description, String kitchen_name) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.price = price;
+        this.description = description;
+        this.kitchen_name = kitchen_name;
     }
 
 
@@ -87,5 +93,18 @@ public class DishEntry {
         return id;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getKitchen_name() {
+        return kitchen_name;
+    }
+
+    public void setKitchen_name(String kitchen_name) {
+        this.kitchen_name = kitchen_name;
+    }
 }
