@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "213617240245",
+    "firebase_url": "https://homefoodie-7456f.firebaseio.com",
+    "project_id": "homefoodie-7456f",
+    "storage_bucket": "homefoodie-7456f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213617240245:android:7691c1cb059f9936",
+        "android_client_info": {
+          "package_name": "com.example.bats.homefoodie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213617240245-ilt0dmg9be7sde28tn7mmpmcm9k0rno5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bats.homefoodie",
+            "certificate_hash": "ae3d85a3d356469362ebcbf928a4798638dd2c08"
+          }
+        },
+        {
+          "client_id": "213617240245-64pgeg0kuh6i9cjhkj94nretr3i0j1e7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8G-wR3QNWaSXOp7mbfDpiM2CzJ05NPzk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213617240245-64pgeg0kuh6i9cjhkj94nretr3i0j1e7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

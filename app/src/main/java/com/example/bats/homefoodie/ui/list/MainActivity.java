@@ -3,12 +3,14 @@ package com.example.bats.homefoodie.ui.list;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -17,8 +19,14 @@ import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +35,9 @@ import butterknife.ButterKnife;
  * MainActivity that displays dishes and handles clicks on dishes.
  */
 public class MainActivity extends AppCompatActivity implements DishesAdapter.OnItemClickListener  {
+
+
+    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("Users/Joe");
 
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
@@ -88,6 +99,31 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
                 mDishesAdapter.swapDishes(dishWithIngredients);
             }
         });
+
+        insertUser();
+    }
+
+    private void insertUser() {
+        String user_name = "bats";
+        String user_age = "38";
+
+        Map<String, Object> dataToSave = new HashMap<>();
+        dataToSave.put("USER_NAME", user_name);
+        dataToSave.put("USER_AGE", user_age);
+        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("TAGTAG", "Document has been saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TAGTAG", "Failed to save docuement");
+            }
+        });
+
+
+
     }
 
 

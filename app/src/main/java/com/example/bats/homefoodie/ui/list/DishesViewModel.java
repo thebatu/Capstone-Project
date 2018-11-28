@@ -30,7 +30,6 @@ public class DishesViewModel extends ViewModel {
         mHomeFoodieRepository = repository;
         //all of my dishes.
         mAllDishes = mHomeFoodieRepository.getAllDishes();
-
     }
 
     /**
