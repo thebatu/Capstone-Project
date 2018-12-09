@@ -9,7 +9,9 @@ import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
-import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.network.LocalStorage.LocalDataSource;
+import com.example.bats.homefoodie.network.networkDataSource.RemoteDataSource;
 
 import java.util.List;
 
@@ -22,41 +24,51 @@ public class HomefoodieRepository {
     private DishDao mDishDao;
     private UserDao mUserDao;
     private IngredientDao mIngredientDao;
-    private HomeFoodieNetworkDataSource mHomeFoodieNetworkDataSource;
+    private LocalDataSource mLocalDataSource;
+    private RemoteDataSource mRemoteDataSource;
     private AppExecutors mExecutors;
     private boolean mInitialized = false;
 
 
     public HomefoodieRepository(final DishDao mDishDao, UserDao mUserDao, IngredientDao ingredientDAO,
-                                HomeFoodieNetworkDataSource mHomeFoodieNetworkDataSource,
+                                LocalDataSource mLocalDataSource, RemoteDataSource mRemoteDataSource,
                                 final AppExecutors mExecutors) {
         this.mDishDao = mDishDao;
         this.mUserDao = mUserDao;
-        this.mIngredientDao = ingredientDAO;
-        this.mHomeFoodieNetworkDataSource = mHomeFoodieNetworkDataSource;
+        this.mLocalDataSource = mLocalDataSource;
+        this.mRemoteDataSource = mRemoteDataSource;
         this.mExecutors = mExecutors;
 
-        LiveData<DishEntry[]> networkData = mHomeFoodieNetworkDataSource.getLatestDishes();
+//        MutableLiveData<UserEntry> firebaseNetworkUserEntry = mRemoteDataSource.getLatestUsers();
+//        firebaseNetworkUserEntry.observeForever(userEntry -> {
+//            mExecutors.networkIO().execute(() -> {
+//
+//            });
+//
+//        });
 
-        networkData.observeForever(newDishesListFromNetwork -> {
-            mExecutors.diskIO().execute(() -> {
-                deleteOldData();
-                Log.d(LOG_TAG, "Deleted old dishes list");
-                mDishDao.bulkInset(newDishesListFromNetwork);
-                Log.d(LOG_TAG, "New dishes inserted");
-            });
-        });
+
+//        LiveData<DishEntry[]> local_data = mLocalDataSource.getLatestDishes();
+//        local_data.observeForever(newDishesListFromNetwork -> {
+//            mExecutors.diskIO().execute(() -> {
+//                deleteOldData();
+//                Log.d(LOG_TAG, "Deleted old dishes list");
+//                mDishDao.bulkInset(newDishesListFromNetwork);
+//                Log.d(LOG_TAG, "New dishes igetLatestUsersnserted");
+//            });
+//        });
     }
 
     public synchronized static HomefoodieRepository getsInstance(DishDao dishDao, UserDao userDao,
                                                                  IngredientDao ingredientDAO,
-                                                                 HomeFoodieNetworkDataSource homeFoodieNetworkDataSource,
+                                                                 LocalDataSource localDataSource,
+                                                                 RemoteDataSource remoteDataSource,
                                                                  AppExecutors executors) {
         Log.d(LOG_TAG, "Getting the repository");
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new HomefoodieRepository(dishDao, userDao, ingredientDAO,
-                        homeFoodieNetworkDataSource, executors);
+                        localDataSource, remoteDataSource,executors);
                 Log.d(LOG_TAG, "Made new repository");
             }
         }
@@ -85,4 +97,13 @@ public class HomefoodieRepository {
     public LiveData<List<Ingredient>> getIngredientForDish(DishEntry dish) {
        return mIngredientDao.getIngredientsForDish(dish.getId());
     }
+
+    public LiveData<UserEntry> getUserEntryList(){
+        return mRemoteDataSource.getLatestUsers();
+    }
+
+
+
+
+
 }

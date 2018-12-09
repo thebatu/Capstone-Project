@@ -42,6 +42,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         }
     }
 
+
     interface OnItemClickListener{
         void onItemClick(int id, int position);
     }

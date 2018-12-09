@@ -5,7 +5,8 @@ import android.content.Context;
 import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.network.HomeFoodieNetworkDataSource;
+import com.example.bats.homefoodie.network.LocalStorage.LocalDataSource;
+import com.example.bats.homefoodie.network.networkDataSource.RemoteDataSource;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragmentViewModelFactory;
 
@@ -20,20 +21,33 @@ public class InjectorUtils {
                 .getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
 
-        HomeFoodieNetworkDataSource networkDataSource =
-                HomeFoodieNetworkDataSource.getInstance(context.getApplicationContext(), executors);
+        LocalDataSource localDataSource =
+                LocalDataSource.getInstance(context.getApplicationContext(), executors);
+
+        RemoteDataSource remoteDataSource =
+                RemoteDataSource.getInstance(context.getApplicationContext(), executors);
+
 
         return HomefoodieRepository.getsInstance(database.dishDao(), database.userDao(),
-                database.ingredientDao(), networkDataSource, executors);
+                database.ingredientDao(), localDataSource, remoteDataSource, executors);
     }
 
-    public static HomeFoodieNetworkDataSource provideNetworkDataSource(Context context) {
+    public static LocalDataSource provideLocalDataSource(Context context) {
         // This call to provide repository is necessary if the app starts from a service - in this
         // case the repository will not exist unless it is specifically created.
         provideRepository(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
-        return HomeFoodieNetworkDataSource.getInstance(context.getApplicationContext(), executors);
+        return LocalDataSource.getInstance(context.getApplicationContext(), executors);
     }
+
+    public static RemoteDataSource provideRemoteDataSource(Context context) {
+        // This call to provide repository is necessary if the app starts from a service - in this
+        // case the repository will not exist unless it is specifically created.
+        provideRepository(context.getApplicationContext());
+        AppExecutors executors = AppExecutors.getInstance();
+        return RemoteDataSource.getInstance(context.getApplicationContext(), executors);
+    }
+
 
     public static MainViewModelFactory provideDishesViewModelFactory(Context context) {
         HomefoodieRepository repository = provideRepository(context.getApplicationContext());

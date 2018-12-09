@@ -1,9 +1,9 @@
 package com.example.bats.homefoodie.ui.list;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -16,16 +16,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -36,8 +37,8 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements DishesAdapter.OnItemClickListener  {
 
-
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("Users/Joe");
+//    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+//    DatabaseReference mConditionRef = mRootRef.child("users");
 
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
@@ -53,10 +54,8 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
 
-    //LinearLayoutManager linearLayoutManager;
     Context context;
-
-    private  final  String FragmentTAG = "1";
+    private final  String FragmentTAG = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,51 +80,65 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
             mDishesRecyclerView.setLayoutManager(layoutManager);
         }
 
-
-
         mDishesRecyclerView.setHasFixedSize(true);
-
         mDishesAdapter = new DishesAdapter(this, this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("/dishes");
+
+        DatabaseReference ref2 =
+        FirebaseDatabase.getInstance().getReference("/dishes");
+
+//        UserEntry userEntry = new UserEntry("batu", "road tofame", true, "Dest Inc");
+
+        DishEntry dishEntry = new DishEntry(1, "fish&chips", 6,
+                "best fish and chips in the world made with super care", "Mama's kitchen");
+
+        DishEntry dishEntry2 = new DishEntry(1, "pizza", 10, "the pizza that rocks the city of Gotham", "uncles ben's kitchen" );
+
+
+                ArrayList tt = new ArrayList();
+        tt.add(new Ingredient(1, "brown rice", "7 cups"));
+        tt.add(new Ingredient(1, "red rice", "300 cups"));
+        tt.add(new Ingredient(1, "meat", "spoons"));
+
+        dishEntry2.setIngredientList(tt);
+
+
+//
+        Map<String, DishEntry> dd = new HashMap<>();
+        dd.put("bats", dishEntry);
+        dd.put("bats", dishEntry2);
+        ref2.push().setValue(dd);
+
+
+
+
+
 
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients -> {
-            if (dishWithIngredients == null) {
-                showLoading();
-            }else {
-                showMainDishDataView();
-                mDishesAdapter.swapDishes(dishWithIngredients);
-            }
-        });
 
-        insertUser();
-    }
+        LiveData<UserEntry> hotStockLiveData = mDishesViewModel.getHotStockLiveData();
+        Log.d("HUM" , "GEE" );
 
-    private void insertUser() {
-        String user_name = "bats";
-        String user_age = "38";
-
-        Map<String, Object> dataToSave = new HashMap<>();
-        dataToSave.put("USER_NAME", user_name);
-        dataToSave.put("USER_AGE", user_age);
-        mDocRef.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("TAGTAG", "Document has been saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w("TAGTAG", "Failed to save docuement");
-            }
-        });
+        //hotStockLiveData.observe(this, tt ->);
 
 
+
+
+//        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients -> {
+//            if (dishWithIngredients == null) {
+//                showLoading();
+//            }else {
+//                showMainDishDataView();
+//                mDishesAdapter.swapDishes(dishWithIngredients);
+//            }
+//        });
 
     }
-
 
     /**
      * This method will make the View for the Dishes list data visible and hide the error message

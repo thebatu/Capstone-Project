@@ -2,12 +2,11 @@ package com.example.bats.homefoodie.ui.list;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-
-import java.util.List;
+import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
 
 /**
@@ -22,14 +21,16 @@ public class DishesViewModel extends ViewModel {
     private HomefoodieRepository mHomeFoodieRepository;
 
     // List of dishes which will be populated from the repository in the constructor of this call
-    private LiveData<List<DishWithIngredients>> mAllDishes;
+    //private LiveData<List<DishWithIngredients>> mAllDishes;
+    private LiveData<UserEntry> mAllUsers;
 
     //Constructor
     public DishesViewModel(HomefoodieRepository repository) {
         //the repository instance.
         mHomeFoodieRepository = repository;
         //all of my dishes.
-        mAllDishes = mHomeFoodieRepository.getAllDishes();
+        //mAllDishes = mHomeFoodieRepository.getAllDishes();
+        mAllUsers = mHomeFoodieRepository.getUserEntryList();
     }
 
     /**
@@ -41,10 +42,15 @@ public class DishesViewModel extends ViewModel {
     }
 
     //getter for all the dishes from the repository
-    public LiveData<List<DishWithIngredients>> getAllDishes() {
-        return mAllDishes;
+//    public LiveData<List<DishWithIngredients>> getAllDishes() {
+//        return mAllDishes;
+//    }
+
+
+
+    @NonNull
+    public LiveData<UserEntry> getHotStockLiveData() {
+        return mAllUsers;
     }
-
-
 
 }

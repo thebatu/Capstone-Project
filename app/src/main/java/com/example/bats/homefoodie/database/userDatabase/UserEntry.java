@@ -11,7 +11,7 @@ public class UserEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-    private String email;
+    //private String email;
     private String address;
     private boolean isSeller;
     private String businessName;
@@ -26,22 +26,26 @@ public class UserEntry {
      * @param businessName if isSeller then business name
      */
     @Ignore
-    public UserEntry(String name, String email, String address, boolean isSeller, String businessName) {
+    public UserEntry(String name,  String address, boolean isSeller, String businessName) {
         this.name = name;
-        this.email = email;
+       // this.email = email;
         this.address = address;
         this.businessName = businessName;
         this.isSeller = isSeller;
     }
     // Constructor used by Room to create WeatherEntries
-    public UserEntry(int id, String name, String email, String address, boolean isSeller, String businessName) {
+    public UserEntry(int id, String name, String address, boolean isSeller, String businessName) {
         this.id = id;
         this.name = name;
-        this.email = email;
+       // this.email = email;
         this.address = address;
         this.businessName = businessName;
         this.isSeller = isSeller;
     }
+
+    @Ignore
+    public UserEntry(){}
+
 
 
     public int getId() {
@@ -60,13 +64,13 @@ public class UserEntry {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     public String getAddress() {
         return address;
