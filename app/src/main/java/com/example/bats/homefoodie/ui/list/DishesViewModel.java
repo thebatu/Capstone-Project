@@ -6,7 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+
+import java.util.List;
 
 
 /**
@@ -22,7 +23,7 @@ public class DishesViewModel extends ViewModel {
 
     // List of dishes which will be populated from the repository in the constructor of this call
     //private LiveData<List<DishWithIngredients>> mAllDishes;
-    private LiveData<UserEntry> mAllUsers;
+    private LiveData<List<DishEntry>> mAllUsers;
 
     //Constructor
     public DishesViewModel(HomefoodieRepository repository) {
@@ -49,7 +50,7 @@ public class DishesViewModel extends ViewModel {
 
 
     @NonNull
-    public LiveData<UserEntry> getHotStockLiveData() {
+    public LiveData<List<DishEntry>> getHotStockLiveData() {
         return mAllUsers;
     }
 

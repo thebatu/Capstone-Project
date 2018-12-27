@@ -20,7 +20,6 @@ public class UserEntry {
      * This constructor is used by HomeFoodieJsonParser. When the network fetch has JSON data, it
      * converts this data to UserEntry objects using this constructor.
      * @param name join date
-     * @param email email address
      * @param address address where the food is cooked or bought
      * @param isSeller is a isSeller or just a buyer
      * @param businessName if isSeller then business name

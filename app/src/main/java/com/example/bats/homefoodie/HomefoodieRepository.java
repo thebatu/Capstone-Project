@@ -9,8 +9,7 @@ import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.database.dishDatabase.IngredientDao;
 import com.example.bats.homefoodie.database.userDatabase.UserDao;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
-import com.example.bats.homefoodie.network.LocalStorage.LocalDataSource;
+import com.example.bats.homefoodie.network.localStorage.LocalDataSource;
 import com.example.bats.homefoodie.network.networkDataSource.RemoteDataSource;
 
 import java.util.List;
@@ -98,7 +97,7 @@ public class HomefoodieRepository {
        return mIngredientDao.getIngredientsForDish(dish.getId());
     }
 
-    public LiveData<UserEntry> getUserEntryList(){
+    public LiveData<List<DishEntry>> getUserEntryList(){
         return mRemoteDataSource.getLatestUsers();
     }
 

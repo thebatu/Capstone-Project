@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 
 import java.util.List;
 
@@ -25,7 +23,8 @@ import java.util.List;
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
 
     private final Context mContext;
-    private List<DishWithIngredients> mDishes;
+    private List<DishEntry> mDishes;
+    private DishEntry mDishes2;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     OnItemClickListener onItemClickListener;
 
@@ -44,7 +43,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
 
     interface OnItemClickListener{
-        void onItemClick(int id, int position);
+        void onItemClick(String id, int position);
     }
 
     /**
@@ -64,12 +63,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     @Override
     public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
 
-        DishWithIngredients dishEntry = mDishes.get(position);
+        DishEntry dishEntry = mDishes.get(position);
 
-        Ingredient ingredient = dishEntry.ingredients.get(position);
-
-        holder.dishName.setText(dishEntry.dishEntry.getName());
-        holder.companyName.setText(dishEntry.dishEntry.getName());
+//        Ingredient ingredient = dishEntry.ingredients.get(position);
+//
+//        holder.dishName.setText(dishEntry.dishEntry.getName());
+//        holder.companyName.setText(dishEntry.dishEntry.getName());
 
         //Load image if exists otherwise load a place holder
 //        if (!dishEntry.getImage().isEmpty()) {
@@ -89,11 +88,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * updates the data set for the adapter
      * @param dishEntries dishes to be displayed
      */
-    public void swapDishes(List<DishWithIngredients> dishEntries) {
+    public void swapDishes(DishEntry dishEntries) {
 
         //if there was no dish data, then recreate all of the list
         if (mDishes == null) {
-            mDishes = dishEntries;
+            mDishes2 = dishEntries;
             notifyDataSetChanged();
         }
     }
@@ -127,8 +126,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         @Override
         public void onClick(View view) {
             //int itemPosition = getAdapterPosition();
-            DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
-            onItemClickListener.onItemClick(dishEntry.dishEntry.getUserId(), dishEntry.dishEntry.getId());
+            DishEntry dishEntry = mDishes.get(getAdapterPosition());
+            //onItemClickListener.onItemClick(dishEntry.dishEntry.getUserId(), dishEntry.dishEntry.getId());
         }
 
     }

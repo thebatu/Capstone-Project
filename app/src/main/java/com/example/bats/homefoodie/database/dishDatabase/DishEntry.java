@@ -20,17 +20,17 @@ public class DishEntry {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int userId;
-    private String name;
-    private int price;
     private String description;
     private String kitchen_name;
+    private String name;
+    private int price;
+    private String userId;
 
     @Ignore
     private List<Ingredient> ingredientList;
 
     @Ignore
-    public DishEntry(int userId, String name, int price, String description, String kitchen_name) {
+    public DishEntry(String userId, String name, int price, String description, String kitchen_name) {
         this.userId = userId;
         this.name = name;
         this.price = price;
@@ -38,8 +38,8 @@ public class DishEntry {
         this.kitchen_name = kitchen_name;
     }
 
-
-    public DishEntry(int id, int userId, String name, int price, String description, String kitchen_name) {
+    //constructor used by Room
+    public DishEntry(int id, String userId, String name, int price, String description, String kitchen_name) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -48,8 +48,9 @@ public class DishEntry {
         this.kitchen_name = kitchen_name;
     }
 
-
-
+    //empty constructor for reflection operation
+    @Ignore
+    public DishEntry(){}
 
 
 
@@ -58,11 +59,11 @@ public class DishEntry {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

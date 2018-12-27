@@ -8,10 +8,15 @@ import android.util.Log;
 
 import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RemoteDataSource {
     private static final String LOG_TAG = RemoteDataSource.class.getSimpleName();
@@ -22,24 +27,25 @@ public class RemoteDataSource {
     private Context mContext;
 
     // LiveData storing the latest downloaded dishes
-    private LiveData<UserEntry> mDownloadedUserList2;
+    private LiveData<List<DishEntry>> mDownloadedUserList2;
     private AppExecutors mExecutors;
     private final DatabaseReference HOT_STOCK_REF;
 
 
+    // constructor, gets the instance of A REPO from FireBase converts livedata to userEntry objects
     public RemoteDataSource(Context mContext, AppExecutors appExecutors) {
         this.mContext = mContext;
         mExecutors = appExecutors;
         //firebase listener to /users
 
-        HOT_STOCK_REF =  FirebaseDatabase.getInstance().getReference(mContext.getString(R.string.users));
+        HOT_STOCK_REF =  FirebaseDatabase.getInstance().getReference(mContext.getString(R.string.Dishes));
         FirebaseQueryLiveDataService liveData = new FirebaseQueryLiveDataService(HOT_STOCK_REF);
         mDownloadedUserList2 =
                 Transformations.map(liveData, new Deserializer());
     }
 
     /**
-     * Get the singleton for this class
+     * return the singleton for this class
      */
     public static RemoteDataSource getInstance(Context context, AppExecutors executors) {
         Log.d(LOG_TAG, "Getting the network data source");
@@ -52,17 +58,31 @@ public class RemoteDataSource {
         return sInstance;
     }
 
-
-    private class Deserializer implements Function<DataSnapshot, UserEntry> {
+    /**
+     * Deserialize using Livedata to UserEntry objects.
+     */
+    private class Deserializer implements Function<DataSnapshot, List<DishEntry>> {
         @Override
-        public UserEntry apply(DataSnapshot dataSnapshot) {
+        public List<DishEntry> apply(DataSnapshot dataSnapshot) {
 
-            return dataSnapshot.getValue(UserEntry.class);
-            //return dataSnapshot.getValue(DishWithIngredients.class);
+                List<DishEntry> dishes = new ArrayList<>();
+
+                 Map<String, String> valueMap = (HashMap<String, String>) dataSnapshot.getValue();
+                 for (DataSnapshot chidSnap : dataSnapshot.getChildren()) {
+                    for (DataSnapshot chidSnap2 : chidSnap.getChildren()){
+
+                        DishEntry dishEntry1 = chidSnap2.getValue(DishEntry.class);
+                        dishes.add(dishEntry1);
+
+                        //Log.d(TAG, "apply: " );
+                    }
+                }
+            return dishes;
+
         }
     }
-
-    public LiveData<UserEntry> getLatestUsers() {
+    //getter
+    public LiveData<List<DishEntry>> getLatestUsers() {
         return mDownloadedUserList2;
     }
 

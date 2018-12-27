@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.bats.homefoodie.AppExecutors;
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.network.LocalStorage.LocalDataSource;
+import com.example.bats.homefoodie.network.localStorage.LocalDataSource;
 import com.example.bats.homefoodie.network.networkDataSource.RemoteDataSource;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragmentViewModelFactory;
