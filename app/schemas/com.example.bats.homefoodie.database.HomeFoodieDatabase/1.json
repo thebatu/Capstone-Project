@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0f012db54b53e70194afa101252866a4",
+    "identityHash": "c33987e51c96527d650fa62aff35cd92",
     "entities": [
       {
         "tableName": "user",
@@ -59,13 +59,19 @@
       },
       {
         "tableName": "dish",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT, `kitchen_name` TEXT, `name` TEXT, `price` INTEGER NOT NULL, `userId` TEXT, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remoteID` TEXT, `description` TEXT, `kitchen_name` TEXT, `name` TEXT, `price` INTEGER NOT NULL, `userId` TEXT, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "remoteID",
+            "columnName": "remoteID",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "description",
@@ -190,7 +196,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0f012db54b53e70194afa101252866a4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c33987e51c96527d650fa62aff35cd92\")"
     ]
   }
 }

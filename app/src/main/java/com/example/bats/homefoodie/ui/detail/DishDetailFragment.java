@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.ui.MainViewModelFactory;
+import com.example.bats.homefoodie.ui.list.DishesViewModel;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
-import java.util.Objects;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,8 +72,7 @@ public class DishDetailFragment extends Fragment {
         mContext = getContext();
 
         assert getArguments() != null;
-        userID = getArguments().getInt("userID");
-
+        String remoteDishId = getArguments().getString("remoteDishId");
 
         //check device orientation
         int orientation = getResources().getConfiguration().orientation;
@@ -88,8 +90,6 @@ public class DishDetailFragment extends Fragment {
             mDetailRecyclerView.setLayoutManager(layoutManager);
         }
 
-
-
 //        LinearLayoutManager layoutManager =
 //                new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
 
@@ -100,26 +100,40 @@ public class DishDetailFragment extends Fragment {
         mDetailRecyclerView.setAdapter(mDishDetailAdapter);
 
         //get the viewModel for dish detail
-        DishDetailFragmentViewModelFactory factory = InjectorUtils.
-                provideDishesFragmentViewModelFactory(Objects.requireNonNull(getActivity()), userID);
-        dishDetailFragmentViewModel = ViewModelProviders.of(this, factory)
-                .get(DishDetailFragmentViewModel.class);
+//        DishDetailFragmentViewModelFactory factory = InjectorUtils.
+//                provideDishesFragmentViewModelFactory(Objects.requireNonNull(getActivity()), userID);
+//        dishDetailFragmentViewModel = ViewModelProviders.of(this, factory)
+//                .get(DishDetailFragmentViewModel.class);
+
+
+        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
+                .getActivity());
+        DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
+        List<Ingredient> hh = mDishesViewModel.getIngredientsListFor1dish(remoteDishId);
+        Log.d("TAG", "hh " + hh);
+        //ArrayList u = mDishesViewModel.getAdish(0);
+        Log.d("tag", "kjhkh");
+
 
         //get the dish for a user and send it to the adapter
-        DishEntry dishEntry = dishDetailFragmentViewModel.getSingleDishForUser();
-        if (dishEntry != null){
-            showMainDishDataView();
-            mDishDetailAdapter.swapDishes(dishEntry);
-        }else {
-            showLoading();
-        }
+//        DishEntry dishEntry = dishDetailFragmentViewModel.getSingleDishForUser();
+//        if (dishEntry != null){
+//            showMainDishDataView();
+//            mDishDetailAdapter.swapDishes(dishEntry);
+//        }else {
+//            showLoading();
+//        }
+//
 
-        //assign values to views
-        assert dishEntry != null;
-        dish_name.setText(dishEntry.getName());
-        dish_price.setText(String.valueOf(dishEntry.getPrice()));
-        dish_description.setText(dishEntry.getDescription());
-        kitchen_name.setText(dishEntry.getKitchen_name());
+
+
+
+//        //assign values to views
+//        assert dishEntry != null;
+//        dish_name.setText(dishEntry.getName());
+//        dish_price.setText(String.valueOf(dishEntry.getPrice()));
+//        dish_description.setText(dishEntry.getDescription());
+//        kitchen_name.setText(dishEntry.getKitchen_name());
 
     }
 

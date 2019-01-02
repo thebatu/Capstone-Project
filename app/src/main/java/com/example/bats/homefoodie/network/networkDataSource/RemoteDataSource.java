@@ -13,10 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RemoteDataSource {
     private static final String LOG_TAG = RemoteDataSource.class.getSimpleName();
@@ -27,7 +24,7 @@ public class RemoteDataSource {
     private Context mContext;
 
     // LiveData storing the latest downloaded dishes
-    private LiveData<List<DishEntry>> mDownloadedUserList2;
+    private LiveData<HashMap<String, DishEntry>> mDownloadedUserList2;
     private AppExecutors mExecutors;
     private final DatabaseReference HOT_STOCK_REF;
 
@@ -61,18 +58,19 @@ public class RemoteDataSource {
     /**
      * Deserialize using Livedata to UserEntry objects.
      */
-    private class Deserializer implements Function<DataSnapshot, List<DishEntry>> {
+    private class Deserializer implements Function<DataSnapshot, HashMap<String, DishEntry>> {
         @Override
-        public List<DishEntry> apply(DataSnapshot dataSnapshot) {
+        public HashMap<String, DishEntry> apply(DataSnapshot dataSnapshot) {
 
-                List<DishEntry> dishes = new ArrayList<>();
+                HashMap<String, DishEntry> dishes = new HashMap<>();
 
-                 Map<String, String> valueMap = (HashMap<String, String>) dataSnapshot.getValue();
-                 for (DataSnapshot chidSnap : dataSnapshot.getChildren()) {
-                    for (DataSnapshot chidSnap2 : chidSnap.getChildren()){
+                 //Map<String, String> valueMap = (HashMap<String, String>) dataSnapshot.getValue();
+                 for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                    for (DataSnapshot childSnap2 : childSnap.getChildren()){
 
-                        DishEntry dishEntry1 = chidSnap2.getValue(DishEntry.class);
-                        dishes.add(dishEntry1);
+                        DishEntry dishEntry1 = childSnap2.getValue(DishEntry.class);
+                        dishEntry1.setRemoteID(childSnap.getKey());
+                        dishes.put(childSnap.getKey(), dishEntry1);
 
                         //Log.d(TAG, "apply: " );
                     }
@@ -82,7 +80,7 @@ public class RemoteDataSource {
         }
     }
     //getter
-    public LiveData<List<DishEntry>> getLatestUsers() {
+    public LiveData<HashMap<String, DishEntry>> getLatestUsers() {
         return mDownloadedUserList2;
     }
 

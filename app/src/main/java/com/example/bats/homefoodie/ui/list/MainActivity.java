@@ -24,7 +24,7 @@ import com.example.bats.homefoodie.utilities.InjectorUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,13 +130,13 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
                 .getApplicationContext());
         mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
 
-        LiveData<List<DishEntry>> hotStockLiveData = mDishesViewModel.getHotStockLiveData();
+        LiveData<HashMap<String, DishEntry>> hotStockLiveData = mDishesViewModel.getAllDishesLiveData();
         Log.d("HUM" , "GEE" );
         hotStockLiveData.observe(this, listOfDishes -> {
             Log.d(TAG, "apply: " + listOfDishes);
             Log.d(TAG, "apply: " + listOfDishes);
 
-            // mDishesAdapter.swapDishes(listOfDishes);
+            mDishesAdapter.swapDishes(listOfDishes);
         });
         //hotStockLiveData.observe(this, tt ->);
 
@@ -180,12 +180,12 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
      * @param position position of the dish returned from the adapter.
      */
     @Override
-    public void onItemClick(String userID, int position) {
-        Toast.makeText(context, "Clicked on item " + position + "  " + userID, Toast.LENGTH_LONG).show();
+    public void onItemClick(String userID, String ClickedOnForADishCallBack) {
+        //Toast.makeText(context, "Clicked on item " + position + "  " + userID, Toast.LENGTH_LONG).show();
 
         //pass the ID of the dish to fragment
         Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
+        bundle.putString("remoteDishId", ClickedOnForADishCallBack);
 
         //create details screen upon click on a dish
         FragmentManager fragmentManager = getSupportFragmentManager();

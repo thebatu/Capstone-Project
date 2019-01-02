@@ -20,6 +20,7 @@ public class DishEntry {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+    public String remoteID;
     private String description;
     private String kitchen_name;
     private String name;
@@ -30,8 +31,9 @@ public class DishEntry {
     private List<Ingredient> ingredientList;
 
     @Ignore
-    public DishEntry(String userId, String name, int price, String description, String kitchen_name) {
+    public DishEntry(String userId, String remoteID, String name, int price, String description, String kitchen_name) {
         this.userId = userId;
+        this.remoteID = remoteID;
         this.name = name;
         this.price = price;
         this.description = description;
@@ -52,8 +54,11 @@ public class DishEntry {
     @Ignore
     public DishEntry(){}
 
+    public String getRemoteID() {return remoteID;}
 
-
+    public void setRemoteID(String remoteID) {
+        this.remoteID = remoteID;
+    }
 
     public void setId(int id) {
         this.id = id;

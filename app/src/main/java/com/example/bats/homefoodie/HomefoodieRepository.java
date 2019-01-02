@@ -12,6 +12,7 @@ import com.example.bats.homefoodie.database.userDatabase.UserDao;
 import com.example.bats.homefoodie.network.localStorage.LocalDataSource;
 import com.example.bats.homefoodie.network.networkDataSource.RemoteDataSource;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class HomefoodieRepository {
@@ -97,7 +98,7 @@ public class HomefoodieRepository {
        return mIngredientDao.getIngredientsForDish(dish.getId());
     }
 
-    public LiveData<List<DishEntry>> getUserEntryList(){
+    public LiveData<HashMap<String,DishEntry>> getUserEntryList(){
         return mRemoteDataSource.getLatestUsers();
     }
 
