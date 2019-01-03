@@ -39,7 +39,7 @@ public class HomefoodieRepository {
         this.mRemoteDataSource = mRemoteDataSource;
         this.mExecutors = mExecutors;
 
-//        MutableLiveData<UserEntry> firebaseNetworkUserEntry = mRemoteDataSource.getLatestUsers();
+//        MutableLiveData<UserEntry> firebaseNetworkUserEntry = mRemoteDataSource.getLatestDishes();
 //        firebaseNetworkUserEntry.observeForever(userEntry -> {
 //            mExecutors.networkIO().execute(() -> {
 //
@@ -98,8 +98,8 @@ public class HomefoodieRepository {
        return mIngredientDao.getIngredientsForDish(dish.getId());
     }
 
-    public LiveData<HashMap<String,DishEntry>> getUserEntryList(){
-        return mRemoteDataSource.getLatestUsers();
+    public LiveData<HashMap<String,DishEntry>> getDishesList(){
+        return mRemoteDataSource.getLatestDishes();
     }
 
 

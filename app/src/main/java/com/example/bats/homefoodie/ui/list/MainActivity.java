@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
+import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.network.FirebaseAuthClass.FirebaseAuthViewModel;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
@@ -24,7 +25,9 @@ import com.example.bats.homefoodie.utilities.InjectorUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,9 +37,6 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements DishesAdapter.OnItemClickListener  {
     private static final String TAG = MainActivity.class.getSimpleName();
-
-//    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-//    DatabaseReference mConditionRef = mRootRef.child("users");
 
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
 //        tt.add(new Ingredient(1, "red rice", "300 cups"));
 //        tt.add(new Ingredient(1, "meat", "spoons"));
 //
+//        dishEntry.setIngredientList(tt);
 //        dishEntry2.setIngredientList(tt);
+//        dishEntry3.setIngredientList(tt);
 //
 //        Map<String, DishEntry> dd = new HashMap<>();
 //        Map<String, DishEntry> dd2 = new HashMap<>();
@@ -132,23 +134,20 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
 
         LiveData<HashMap<String, DishEntry>> hotStockLiveData = mDishesViewModel.getAllDishesLiveData();
         Log.d("HUM" , "GEE" );
+        if (hotStockLiveData.getValue() == null){
+            showLoading();
+        }else {
+            showMainDishDataView();
+        }
         hotStockLiveData.observe(this, listOfDishes -> {
-            Log.d(TAG, "apply: " + listOfDishes);
-            Log.d(TAG, "apply: " + listOfDishes);
+            if (listOfDishes == null) {
+                showLoading();
+            } else {
+                showMainDishDataView();
+                mDishesAdapter.swapDishes(listOfDishes);
+            }
 
-            mDishesAdapter.swapDishes(listOfDishes);
         });
-        //hotStockLiveData.observe(this, tt ->);
-
-//        mDishesViewModel.getAllDishes().observe(this, dishWithIngredients -> {
-//            if (dishWithIngredients == null) {
-//                showLoading();
-//            }else {
-//                showMainDishDataView();
-//                mDishesAdapter.swapUserEntryDishes(dishWithIngredients);
-//            }
-//        });
-
     }
 
     /**
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     /**
      * Callback for clicks on a dish, the interface is declared in the adapter.
      * @param userID id of the user who owns the dish.
-     * @param position position of the dish returned from the adapter.
+     * @param ClickedOnForADishCallBack position of the dish returned from the adapter.
      */
     @Override
     public void onItemClick(String userID, String ClickedOnForADishCallBack) {

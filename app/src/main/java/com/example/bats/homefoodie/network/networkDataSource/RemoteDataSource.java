@@ -26,7 +26,7 @@ public class RemoteDataSource {
     // LiveData storing the latest downloaded dishes
     private LiveData<HashMap<String, DishEntry>> mDownloadedUserList2;
     private AppExecutors mExecutors;
-    private final DatabaseReference HOT_STOCK_REF;
+    private final DatabaseReference ALL_DISHES_REF;
 
 
     // constructor, gets the instance of A REPO from FireBase converts livedata to userEntry objects
@@ -35,8 +35,9 @@ public class RemoteDataSource {
         mExecutors = appExecutors;
         //firebase listener to /users
 
-        HOT_STOCK_REF =  FirebaseDatabase.getInstance().getReference(mContext.getString(R.string.Dishes));
-        FirebaseQueryLiveDataService liveData = new FirebaseQueryLiveDataService(HOT_STOCK_REF);
+        ALL_DISHES_REF = FirebaseDatabase.getInstance().getReference(mContext.getString(R.string
+                .Dishes));
+        FirebaseQueryLiveDataService liveData = new FirebaseQueryLiveDataService(ALL_DISHES_REF);
         mDownloadedUserList2 =
                 Transformations.map(liveData, new Deserializer());
     }
@@ -46,7 +47,7 @@ public class RemoteDataSource {
      */
     public static RemoteDataSource getInstance(Context context, AppExecutors executors) {
         Log.d(LOG_TAG, "Getting the network data source");
-        if (sInstance == null){
+        if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new RemoteDataSource(context.getApplicationContext(), executors);
                 Log.d(LOG_TAG, "made new network data source");
@@ -62,31 +63,26 @@ public class RemoteDataSource {
         @Override
         public HashMap<String, DishEntry> apply(DataSnapshot dataSnapshot) {
 
-                HashMap<String, DishEntry> dishes = new HashMap<>();
+            HashMap<String, DishEntry> dishes = new HashMap<>();
 
-                 //Map<String, String> valueMap = (HashMap<String, String>) dataSnapshot.getValue();
-                 for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
-                    for (DataSnapshot childSnap2 : childSnap.getChildren()){
+            //Map<String, String> valueMap = (HashMap<String, String>) dataSnapshot.getValue();
+            for (DataSnapshot childSnap : dataSnapshot.getChildren()) {
+                for (DataSnapshot childSnap2 : childSnap.getChildren()) {
 
-                        DishEntry dishEntry1 = childSnap2.getValue(DishEntry.class);
-                        dishEntry1.setRemoteID(childSnap.getKey());
-                        dishes.put(childSnap.getKey(), dishEntry1);
-
-                        //Log.d(TAG, "apply: " );
-                    }
+                    DishEntry dishEntry1 = childSnap2.getValue(DishEntry.class);
+                    dishEntry1.setRemoteID(childSnap.getKey());
+                    dishes.put(childSnap.getKey(), dishEntry1);
                 }
+            }
             return dishes;
 
         }
     }
+
     //getter
-    public LiveData<HashMap<String, DishEntry>> getLatestUsers() {
+    public LiveData<HashMap<String, DishEntry>> getLatestDishes() {
         return mDownloadedUserList2;
     }
-
-
-
-
 
 
 }

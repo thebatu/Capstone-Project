@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.example.bats.homefoodie.HomefoodieRepository;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,13 +21,14 @@ import java.util.Map;
  */
 public class DishesViewModel extends ViewModel {
 
-    private LiveData<List<Ingredient>> mIngredientList;
-
+    //variable will hold the value of a single clicked on dish
+    LiveData<List<DishEntry>> ingredientsListforSingleDish = new LiveData<List<DishEntry>>() {};
 
     //reference to the repository {@link HomefoodieRepository }
     private HomefoodieRepository mHomeFoodieRepository;
     // List of dishes which will be populated from the repository in the constructor of this call
     //private LiveData<List<DishWithIngredients>> mAllDishes;
+    //variable holds all dishes from the network dataSource
     private LiveData<HashMap<String, DishEntry>> mAllDishes;
 
     //Constructor
@@ -37,7 +37,7 @@ public class DishesViewModel extends ViewModel {
         mHomeFoodieRepository = repository;
         //all of my dishes.
         //mAllDishes = mHomeFoodieRepository.getAllDishes();
-        mAllDishes = mHomeFoodieRepository.getUserEntryList();
+        mAllDishes = mHomeFoodieRepository.getDishesList();
     }
 
     /**
@@ -54,28 +54,28 @@ public class DishesViewModel extends ViewModel {
 //    }
 
 
-    LiveData<List<List<Ingredient>>> ingredientsListforSingleDish = new LiveData<List<List
-             <Ingredient>>>() {};
-
-    List<List<Ingredient>> fff = new ArrayList<List<Ingredient>>(){};
-
-    public LiveData<List<List<Ingredient>>> getIngredientsListFor1dish(String remoteDishId) {
-
+    /**
+     * get a single dish from a list of dishes using clicked on dish ID
+     * @param remoteDishId clicked on dish ID
+     * @return a single DishEntry
+     */
+    public LiveData<List<DishEntry>> getSingleDish(String remoteDishId) {
+        List<DishEntry> aDish = new ArrayList<DishEntry>(){};
         ingredientsListforSingleDish = Transformations.map(mAllDishes, input -> {
-
             for (Map.Entry<String, DishEntry> d : input.entrySet()) {
                 if (d.getKey().equals(remoteDishId)) {
-                    fff.add(d.getValue().getIngredientList());
+                    aDish.add(d.getValue());
                 }
             }
-            return fff;
+            return aDish;
         });
         return ingredientsListforSingleDish;
     }
 
 
 
-        @NonNull
+    //getter
+    @NonNull
     public LiveData<HashMap<String, DishEntry>> getAllDishesLiveData() {
         return mAllDishes;
     }

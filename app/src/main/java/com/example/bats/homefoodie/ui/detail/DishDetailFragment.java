@@ -2,7 +2,6 @@ package com.example.bats.homefoodie.ui.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
+import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.list.DishesViewModel;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
@@ -43,12 +42,9 @@ public class DishDetailFragment extends Fragment {
     RecyclerView mDetailRecyclerView;
     private DishDetailAdapter mDishDetailAdapter;
     Unbinder unbinder;
-
     //progressbar indicator
-   @BindView(R.id.pb_loading_indicator)
+    @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
-    Context mContext;
-
     @BindView(R.id.detail_dish_name)
     TextView dish_name;
     @BindView(R.id.detail_dish_price)
@@ -57,6 +53,10 @@ public class DishDetailFragment extends Fragment {
     TextView kitchen_name;
     @BindView(R.id.detail_dish_description)
     TextView dish_description;
+    @BindView(R.id.the_dish_name)
+    TextView the_dish_name;
+    @BindView(R.id.the_kitchen_name)
+    TextView the_kitchen_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,12 +66,9 @@ public class DishDetailFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mContext = getContext();
 
         assert getArguments() != null;
         String remoteDishId = getArguments().getString("remoteDishId");
@@ -81,76 +78,56 @@ public class DishDetailFragment extends Fragment {
 
         //if horizontal
         if (orientation == 2) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             mDetailRecyclerView.setLayoutManager(gridLayoutManager);
         }
 
         //if vertical
-        if (orientation == 1){
+        if (orientation == 1) {
             LinearLayoutManager layoutManager =
-                    new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+                    new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDetailRecyclerView.setLayoutManager(layoutManager);
         }
 
-//        LinearLayoutManager layoutManager =
-//                new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-
-        //setup recycler view and adapter
-//        mDetailRecyclerView.setLayoutManager(layoutManager);
         mDetailRecyclerView.setHasFixedSize(true);
-        mDishDetailAdapter = new DishDetailAdapter(mContext);
+        mDishDetailAdapter = new DishDetailAdapter(getContext());
         mDetailRecyclerView.setAdapter(mDishDetailAdapter);
-
-        //get the viewModel for dish detail
-//        DishDetailFragmentViewModelFactory factory = InjectorUtils.
-//                provideDishesFragmentViewModelFactory(Objects.requireNonNull(getActivity()), userID);
-//        dishDetailFragmentViewModel = ViewModelProviders.of(this, factory)
-//                .get(DishDetailFragmentViewModel.class);
-
 
 
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(Objects
                 .requireNonNull(this
-                .getActivity()));
+                        .getActivity()));
         //get the dishesViewModel
-        DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
+        DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get
+                (DishesViewModel.class);
         //get the viewModel of the mainActivity which contains a list of dishes. find the
         // corresponding dish to ID and display it
-        LiveData<List<List<Ingredient>>> hh = mDishesViewModel.getIngredientsListFor1dish(remoteDishId);
-        hh.observe(getActivity(), items -> {
-            Log.d("tag", "kjhkh" + items.toString());
+        LiveData<List<DishEntry>> aDish = mDishesViewModel.getSingleDish(remoteDishId);
+        //observe the livedata of a single clicked on dish
+        aDish.observe(getActivity(), dish -> {
+            if (dish != null) {
+                showMainDishDataView();
+                dish_name.setText(dish.get(0).getName());
+                dish_price.setText(String.valueOf(dish.get(0).getPrice()));
+                dish_description.setText(dish.get(0).getDescription());
+                kitchen_name.setText(dish.get(0).getKitchen_name());
+                mDishDetailAdapter.swapDishes(dish.get(0));
+                the_dish_name.setText("Dish name: ");
+                the_kitchen_name.setText("Kitchen name: ");
+            } else {
+                showLoading();
+            }
 
         });
 
         Log.d("tag", "kjhkh");
-
-
-        //get the dish for a user and send it to the adapter
-//        DishEntry dishEntry = dishDetailFragmentViewModel.getSingleDishForUser();
-//        if (dishEntry != null){
-//            showMainDishDataView();
-//            mDishDetailAdapter.swapDishes(dishEntry);
-//        }else {
-//            showLoading();
-//        }
-//
-
-
-
-
-//        //assign values to views
-//        assert dishEntry != null;
-//        dish_name.setText(dishEntry.getName());
-//        dish_price.setText(String.valueOf(dishEntry.getPrice()));
-//        dish_description.setText(dishEntry.getDescription());
-//        kitchen_name.setText(dishEntry.getKitchen_name());
-
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        //unbind binding library
         unbinder.unbind();
     }
 

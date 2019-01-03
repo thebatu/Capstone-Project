@@ -30,6 +30,18 @@ public class DishEntry {
     @Ignore
     private List<Ingredient> ingredientList;
 
+    //constructor to create objects to push to firebase
+    @Ignore
+    public DishEntry(String userId, String name, int price, String description, String kitchen_name) {
+        this.userId = userId;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.kitchen_name = kitchen_name;
+    }
+
+
+
     @Ignore
     public DishEntry(String userId, String remoteID, String name, int price, String description, String kitchen_name) {
         this.userId = userId;

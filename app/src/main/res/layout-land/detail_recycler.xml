@@ -34,20 +34,20 @@
         android:id="@+id/detail_dish_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/the_dish_name"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/detail_kitchen_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/the_kitchen_name"
         app:layout_constraintTop_toBottomOf="@+id/detail_dish_name" />
 
     <android.support.constraint.Guideline
@@ -80,10 +80,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/detail_kitchen_name" />
+        app:layout_constraintTop_toBottomOf="@+id/content_intro" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -123,6 +123,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.546" />
+
+    <TextView
+        android:id="@+id/the_dish_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/the_kitchen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/the_dish_name" />
+
+    <TextView
+        android:id="@+id/content_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Description: "
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/the_kitchen_name" />
 
 
 </android.support.constraint.ConstraintLayout>

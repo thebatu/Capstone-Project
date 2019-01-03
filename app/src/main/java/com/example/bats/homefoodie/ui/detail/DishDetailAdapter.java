@@ -47,9 +47,7 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
     @Override
     public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
         List<Ingredient> ingredient =  mDish.getIngredientList();
-
-        holder.tv_ingredients_list.setText(ingredient.get(position).getName());
-        //holder.dish_name.setText(ingredient.get(position).getName());
+        holder.tv_ingredients_list.setText("- " + ingredient.get(position).getName());
     }
 
     @Override
@@ -62,7 +60,6 @@ public class DishDetailAdapter extends RecyclerView.Adapter<DishDetailAdapter.Di
         mDish = dishEntry;
         notifyDataSetChanged();
     }
-
 
     public class DishesAdapterViewHolder extends RecyclerView.ViewHolder {
 
