@@ -9,7 +9,6 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.bats.homefoodie.database.HomeFoodieDatabase;
-import com.example.bats.homefoodie.database.userDatabase.UserEntry;
 
 import java.util.List;
 
@@ -46,8 +45,8 @@ public interface UserDao {
     void deleteUser(UserEntry user);
 
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(UserEntry user);
 
 
-}
+ }

@@ -14,10 +14,9 @@ import android.widget.TextView;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
-import com.example.bats.homefoodie.database.dishDatabase.DishWithIngredients;
-import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Exposes a list of dishes from a list of {@link DishEntry} to a {@link RecyclerView}.
@@ -25,7 +24,8 @@ import java.util.List;
 public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdapterViewHolder> {
 
     private final Context mContext;
-    private List<DishWithIngredients> mDishes;
+    private HashMap<String, DishEntry> mDishes;
+    private ArrayList<DishEntry> mDishEntries;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     OnItemClickListener onItemClickListener;
 
@@ -34,16 +34,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     public DishesAdapter(Context context, OnItemClickListener listener ) {
         mContext = context;
         onItemClickListener = listener;
-        //mClickHandler = clickHandler;
-        if (mDishes != null){
-            for (int i = 0; i < mDishes.size(); i++) {
-                expandState.append(i, false);
-            }
-        }
+
     }
 
     interface OnItemClickListener{
-        void onItemClick(int id, int position);
+        void onItemClick(String id, String position);
     }
 
     /**
@@ -63,12 +58,11 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     @Override
     public void onBindViewHolder(@NonNull DishesAdapterViewHolder holder, int position) {
 
-        DishWithIngredients dishEntry = mDishes.get(position);
+        DishEntry dishEntry = mDishEntries.get(position);
 
-        Ingredient ingredient = dishEntry.ingredients.get(position);
-
-        holder.dishName.setText(dishEntry.dishEntry.getName());
-        holder.companyName.setText(dishEntry.dishEntry.getName());
+        holder.dishName.setText(dishEntry.getName());
+        holder.companyName.setText(dishEntry.getName());
+        holder.price.setText(Integer.toString(dishEntry.getPrice()));
 
         //Load image if exists otherwise load a place holder
 //        if (!dishEntry.getImage().isEmpty()) {
@@ -88,11 +82,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * updates the data set for the adapter
      * @param dishEntries dishes to be displayed
      */
-    public void swapDishes(List<DishWithIngredients> dishEntries) {
+    public void swapDishes(HashMap<String, DishEntry> dishEntries) {
 
         //if there was no dish data, then recreate all of the list
         if (mDishes == null) {
             mDishes = dishEntries;
+            mDishEntries = new ArrayList<>(dishEntries.values());
             notifyDataSetChanged();
         }
     }
@@ -107,6 +102,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         ImageButton favoriteStar;
         TextView dishName;
         TextView companyName;
+        TextView price;
         ConstraintLayout card_view1;
 
         public DishesAdapterViewHolder(@NonNull View itemView) {
@@ -115,6 +111,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             favoriteStar = itemView.findViewById(R.id.star);
             dishName = itemView.findViewById(R.id.mainpage_dish_name);
             companyName = itemView.findViewById(R.id.mainpage_company_name);
+            price = itemView.findViewById(R.id.price_int);
             card_view1 = itemView.findViewById(R.id.card_view1);
             itemView.setOnClickListener(this);
         }
@@ -126,8 +123,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         @Override
         public void onClick(View view) {
             //int itemPosition = getAdapterPosition();
-            DishWithIngredients dishEntry = mDishes.get(getAdapterPosition());
-            onItemClickListener.onItemClick(dishEntry.dishEntry.getUserId(), dishEntry.dishEntry.getId());
+            DishEntry dishEntry = mDishEntries.get(getAdapterPosition());
+
+            assert dishEntry != null;
+            onItemClickListener.onItemClick(dishEntry.getUserId(), dishEntry.getRemoteID());
         }
 
     }

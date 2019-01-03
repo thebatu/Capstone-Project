@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2b849cad85a737fa1a59876b365e076d",
+    "identityHash": "c33987e51c96527d650fa62aff35cd92",
     "entities": [
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `email` TEXT, `address` TEXT, `isSeller` INTEGER NOT NULL, `businessName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `address` TEXT, `isSeller` INTEGER NOT NULL, `businessName` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,12 +17,6 @@
           {
             "fieldPath": "name",
             "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "email",
-            "columnName": "email",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -65,7 +59,7 @@
       },
       {
         "tableName": "dish",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER NOT NULL, `name` TEXT, `price` INTEGER NOT NULL, `description` TEXT, `kitchen_name` TEXT, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remoteID` TEXT, `description` TEXT, `kitchen_name` TEXT, `name` TEXT, `price` INTEGER NOT NULL, `userId` TEXT, FOREIGN KEY(`userId`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -74,10 +68,22 @@
             "notNull": true
           },
           {
-            "fieldPath": "userId",
-            "columnName": "userId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "remoteID",
+            "columnName": "remoteID",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kitchen_name",
+            "columnName": "kitchen_name",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -92,14 +98,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "description",
-            "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "kitchen_name",
-            "columnName": "kitchen_name",
+            "fieldPath": "userId",
+            "columnName": "userId",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -196,7 +196,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2b849cad85a737fa1a59876b365e076d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c33987e51c96527d650fa62aff35cd92\")"
     ]
   }
 }

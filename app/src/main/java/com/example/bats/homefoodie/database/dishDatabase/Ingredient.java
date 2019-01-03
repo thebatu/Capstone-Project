@@ -33,6 +33,10 @@ public class Ingredient {
         this.name = name;
     }
 
+    @Ignore
+    //constructor needed by firebase
+    public Ingredient(){}
+
 
     public int getDishId() {
         return dishId;
