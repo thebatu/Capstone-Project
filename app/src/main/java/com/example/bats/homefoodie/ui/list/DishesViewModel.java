@@ -1,6 +1,5 @@
 package com.example.bats.homefoodie.ui.list;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
@@ -55,19 +54,23 @@ public class DishesViewModel extends ViewModel {
 //    }
 
 
-     LiveData<List<Ingredient>> ingredientsListforSingleDish = new LiveData<List<Ingredient>>() {};
-    List<Ingredient> fff = new ArrayList<Ingredient>(){};
+    LiveData<List<List<Ingredient>>> ingredientsListforSingleDish = new LiveData<List<List
+             <Ingredient>>>() {};
 
-    public List<Ingredient> getIngredientsListFor1dish(String remoteDishId) {
+    List<List<Ingredient>> fff = new ArrayList<List<Ingredient>>(){};
 
-        ingredientsListforSingleDish = Transformations.map(mAllDishes, new Function<HashMap<String, DishEntry>, List<Ingredient>>() {
-            @Override
-            public List<Ingredient> apply(HashMap<String, DishEntry> input) {
-                for (DishEntry d : input.values()) {
-                    fff.add(d.getIngredientList());
+    public LiveData<List<List<Ingredient>>> getIngredientsListFor1dish(String remoteDishId) {
+
+        ingredientsListforSingleDish = Transformations.map(mAllDishes, input -> {
+
+            for (Map.Entry<String, DishEntry> d : input.entrySet()) {
+                if (d.getKey().equals(remoteDishId)) {
+                    fff.add(d.getValue().getIngredientList());
                 }
             }
+            return fff;
         });
+        return ingredientsListforSingleDish;
     }
 
 

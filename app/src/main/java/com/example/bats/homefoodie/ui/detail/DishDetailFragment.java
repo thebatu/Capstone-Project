@@ -1,5 +1,6 @@
 package com.example.bats.homefoodie.ui.detail;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.bats.homefoodie.ui.list.DishesViewModel;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,12 +108,20 @@ public class DishDetailFragment extends Fragment {
 //                .get(DishDetailFragmentViewModel.class);
 
 
-        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
-                .getActivity());
+
+        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(Objects
+                .requireNonNull(this
+                .getActivity()));
+        //get the dishesViewModel
         DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get(DishesViewModel.class);
-        List<Ingredient> hh = mDishesViewModel.getIngredientsListFor1dish(remoteDishId);
-        Log.d("TAG", "hh " + hh);
-        //ArrayList u = mDishesViewModel.getAdish(0);
+        //get the viewModel of the mainActivity which contains a list of dishes. find the
+        // corresponding dish to ID and display it
+        LiveData<List<List<Ingredient>>> hh = mDishesViewModel.getIngredientsListFor1dish(remoteDishId);
+        hh.observe(getActivity(), items -> {
+            Log.d("tag", "kjhkh" + items.toString());
+
+        });
+
         Log.d("tag", "kjhkh");
 
 
