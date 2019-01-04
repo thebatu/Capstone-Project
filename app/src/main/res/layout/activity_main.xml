@@ -7,11 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.list.MainActivity">
 
+    <include layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainactiviy_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="56dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

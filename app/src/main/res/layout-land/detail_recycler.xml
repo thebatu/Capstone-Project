@@ -4,31 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/colorAccent"
-    android:clickable="true"
     android:background="@drawable/ten_pain_level_background"
+
+    android:clickable="true"
     tools:context=".ui.detail.DishDetailFragment">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="159dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:scaleType="centerCrop"
+        android:layout_width="696dp"
+        android:layout_height="140dp"
+        android:scaleType="fitXY"
         android:src="@drawable/food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="169dp" />
+        app:layout_constraintGuide_begin="196dp" />
 
     <TextView
         android:id="@+id/detail_dish_name"
@@ -149,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="Description: "
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/the_kitchen_name" />

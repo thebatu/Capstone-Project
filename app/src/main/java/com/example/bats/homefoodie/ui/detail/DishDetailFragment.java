@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.list.DishesViewModel;
+import com.example.bats.homefoodie.ui.list.MainActivity;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
 
 import java.util.List;
@@ -57,12 +59,25 @@ public class DishDetailFragment extends Fragment {
     TextView the_dish_name;
     @BindView(R.id.the_kitchen_name)
     TextView the_kitchen_name;
+    Toolbar toolbar;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_recycler, container, false);
         unbinder = ButterKnife.bind(this, view);
+        toolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity()))
+                .getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        toolbar.setTitle("Title");
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+        toolbar.setNavigationOnClickListener(v -> {
+
+            getActivity().onBackPressed();
+        });
         return view;
     }
 
@@ -104,6 +119,11 @@ public class DishDetailFragment extends Fragment {
         // corresponding dish to ID and display it
         LiveData<List<DishEntry>> aDish = mDishesViewModel.getSingleDish(remoteDishId);
         //observe the livedata of a single clicked on dish
+        if (aDish.getValue() == null){
+            showLoading();
+        }else{
+            showMainDishDataView();
+        }
         aDish.observe(getActivity(), dish -> {
             if (dish != null) {
                 showMainDishDataView();
