@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.bats.homefoodie.R;
 import com.example.bats.homefoodie.database.dishDatabase.DishEntry;
 import com.example.bats.homefoodie.database.dishDatabase.Ingredient;
 import com.example.bats.homefoodie.network.FirebaseAuthClass.FirebaseAuthViewModel;
+import com.example.bats.homefoodie.ui.BaseActivity;
 import com.example.bats.homefoodie.ui.MainViewModelFactory;
 import com.example.bats.homefoodie.ui.detail.DishDetailFragment;
 import com.example.bats.homefoodie.utilities.InjectorUtils;
@@ -35,12 +37,10 @@ import butterknife.ButterKnife;
 /**
  * MainActivity that displays dishes and handles clicks on dishes.
  */
-public class MainActivity extends AppCompatActivity implements DishesAdapter.OnItemClickListener  {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends BaseActivity implements DishesAdapter.OnItemClickListener  {
 
     //mainActivity viewModel
     DishesViewModel mDishesViewModel;
-
     @BindView(R.id.mainactiviy_recyclerview)
     RecyclerView mDishesRecyclerView;
 
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
     //progressbar indicator
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
-
     Context context;
     private final  String FragmentTAG = "1";
 
@@ -82,13 +81,11 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         mDishesAdapter = new DishesAdapter(this, this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("/dishes");
-
+//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("/dishes");
+//
         DatabaseReference ref2 =
         FirebaseDatabase.getInstance().getReference("/dishes");
-
-//        UserEntry userEntry = new UserEntry("batu", "road tofame", true, "Dest Inc");
 
         //Check if user is signedIn. if not signIn user anonymously.
         FirebaseAuthViewModel firebaseAuthViewModel =
@@ -97,35 +94,39 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         firebaseAuthViewModel
                 .getFirebaseAuthLiveData()
                 .observe(this, firebaseUser -> {
-                    Log.d("MyTag", "ffbase  " + firebaseUser.getUid());
+                    Log.d("MyTag", "fbase  " + firebaseUser.getUid());
                 });
 
+//
+        DishEntry dishEntry = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "fish&chips", 6,
+                "best fish and chips in the world made with super care", "Mama's kitchen");
 
-//        DishEntry dishEntry = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "fish&chips", 6,
-//                "best fish and chips in the world made with super care", "Mama's kitchen");
-//
-//        DishEntry dishEntry2 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "pizza", 10, "the pizza that rocks the city of Gotham", "uncles ben's kitchen" );
-//        DishEntry dishEntry3 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "beef", 1000, "the beef of the beef", "beef kitchen" );
-//
-//
-//        ArrayList tt = new ArrayList();
-//        tt.add(new Ingredient(1, "brown rice", "7 cups"));
-//        tt.add(new Ingredient(1, "red rice", "300 cups"));
-//        tt.add(new Ingredient(1, "meat", "spoons"));
-//
-//        dishEntry.setIngredientList(tt);
-//        dishEntry2.setIngredientList(tt);
-//        dishEntry3.setIngredientList(tt);
-//
-//        Map<String, DishEntry> dd = new HashMap<>();
-//        Map<String, DishEntry> dd2 = new HashMap<>();
-//
-//        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry);
-//        dd2.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry3);
-//        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry2);
-//        ref2.push().setValue(dd);
-//        ref2.push().setValue(dd2);
+        DishEntry dishEntry2 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "pizza", 10, "the pizza that rocks the city of Gotham", "uncles ben's kitchen" );
+        DishEntry dishEntry3 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "beef", 1000, "the beef of the beef", "beef kitchen" );
 
+
+        ArrayList tt = new ArrayList();
+        tt.add(new Ingredient(1, "brown rice", "7 cups"));
+        tt.add(new Ingredient(1, "red rice", "300 cups"));
+        tt.add(new Ingredient(1, "meat", "spoons"));
+        tt.add(new Ingredient(1, "fish", "1 big fish"));
+        tt.add(new Ingredient(1, "vigor", "1 cup"));
+        tt.add(new Ingredient(1, "seeds", "1 kilo"));
+        tt.add(new Ingredient(1, "meat", "5 kilos"));
+
+        dishEntry.setIngredientList(tt);
+        dishEntry2.setIngredientList(tt);
+        dishEntry3.setIngredientList(tt);
+
+        Map<String, DishEntry> dd = new HashMap<>();
+        Map<String, DishEntry> dd2 = new HashMap<>();
+
+        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry);
+        dd2.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry3);
+        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry2);
+        ref2.push().setValue(dd);
+        ref2.push().setValue(dd2);
+//
 
         //Factory to get the viewModel for dishes
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this
@@ -172,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         mLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
-
     /**
      * Callback for clicks on a dish, the interface is declared in the adapter.
      * @param userID id of the user who owns the dish.
@@ -189,15 +189,27 @@ public class MainActivity extends AppCompatActivity implements DishesAdapter.OnI
         //create details screen upon click on a dish
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        DishDetailFragment newFragment = new DishDetailFragment();
-        newFragment.setArguments(bundle);
+        DishDetailFragment detailFragment = new DishDetailFragment();
+        detailFragment.setArguments(bundle);
 
         fragmentTransaction.setCustomAnimations
                 (R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_right,
-                        R.anim.exit_to_right).add(R.id.container, newFragment, FragmentTAG)
+                        R.anim.exit_to_right).add(R.id.container, detailFragment, FragmentTAG)
                 .addToBackStack(null)
                 .commit();
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDishesRecyclerView.scrollToPosition(mPosition);
+
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        mDishesRecyclerView.scrollToPosition(mPosition);
+//    }
 }

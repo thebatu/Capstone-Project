@@ -9,13 +9,19 @@
     tools:context=".ui.list.MainActivity"
     >
 
+    <include
+        android:id="@+id/include5"
+        layout="@layout/toolbar" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainactiviy_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
         android:clipToPadding="false"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!-- A progress bar that will be shown to users to indicate that weather data is loading -->
@@ -24,7 +30,15 @@
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mainactiviy_recyclerview" />
 
 
 </android.support.constraint.ConstraintLayout>

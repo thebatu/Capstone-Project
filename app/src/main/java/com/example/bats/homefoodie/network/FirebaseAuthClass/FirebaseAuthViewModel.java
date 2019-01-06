@@ -6,26 +6,19 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Clas to fetch
+ */
 public class FirebaseAuthViewModel extends ViewModel {
 
     private final FirebaseAuthLiveData firebaseAuthLiveData = new FirebaseAuthLiveData();
-
 
     public LiveData<FirebaseUser> getFirebaseAuthLiveData() {
         return firebaseAuthLiveData;
     }
 
     public String getSimpleFirebaseUser(){
-        Log.d("MyTag", "ffbase  " +  firebaseAuthLiveData.getUID());
         return firebaseAuthLiveData.getUID();
 
-//
-//        String dfjds = getFirebaseAuthLiveData().getValue().getUid();
-//
-//        if (!getFirebaseAuthLiveData().getValue().getUid().isEmpty()) {
-//            return getFirebaseAuthLiveData().getValue().getUid();
-//        }else {
-//            return null;
-//        }
     }
 }
