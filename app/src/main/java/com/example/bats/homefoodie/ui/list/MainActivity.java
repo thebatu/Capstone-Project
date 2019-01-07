@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,34 +99,34 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
                 });
 
 //
-        DishEntry dishEntry = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "fish&chips", 6,
-                "best fish and chips in the world made with super care", "Mama's kitchen");
-
-        DishEntry dishEntry2 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "pizza", 10, "the pizza that rocks the city of Gotham", "uncles ben's kitchen" );
-        DishEntry dishEntry3 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "beef", 1000, "the beef of the beef", "beef kitchen" );
-
-
-        ArrayList tt = new ArrayList();
-        tt.add(new Ingredient(1, "brown rice", "7 cups"));
-        tt.add(new Ingredient(1, "red rice", "300 cups"));
-        tt.add(new Ingredient(1, "meat", "spoons"));
-        tt.add(new Ingredient(1, "fish", "1 big fish"));
-        tt.add(new Ingredient(1, "vigor", "1 cup"));
-        tt.add(new Ingredient(1, "seeds", "1 kilo"));
-        tt.add(new Ingredient(1, "meat", "5 kilos"));
-
-        dishEntry.setIngredientList(tt);
-        dishEntry2.setIngredientList(tt);
-        dishEntry3.setIngredientList(tt);
-
-        Map<String, DishEntry> dd = new HashMap<>();
-        Map<String, DishEntry> dd2 = new HashMap<>();
-
-        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry);
-        dd2.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry3);
-        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry2);
-        ref2.push().setValue(dd);
-        ref2.push().setValue(dd2);
+//        DishEntry dishEntry = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "fish&chips", 6,
+//                "best fish and chips in the world made with super care", "Mama's kitchen");
+//
+//        DishEntry dishEntry2 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "pizza", 10, "the pizza that rocks the city of Gotham", "uncles ben's kitchen" );
+//        DishEntry dishEntry3 = new DishEntry(firebaseAuthViewModel.getSimpleFirebaseUser(), "beef", 1000, "the beef of the beef", "beef kitchen" );
+//
+//
+//        ArrayList tt = new ArrayList();
+//        tt.add(new Ingredient(1, "brown rice", "7 cups"));
+//        tt.add(new Ingredient(1, "red rice", "300 cups"));
+//        tt.add(new Ingredient(1, "meat", "spoons"));
+//        tt.add(new Ingredient(1, "fish", "1 big fish"));
+//        tt.add(new Ingredient(1, "vigor", "1 cup"));
+//        tt.add(new Ingredient(1, "seeds", "1 kilo"));
+//        tt.add(new Ingredient(1, "meat", "5 kilos"));
+//
+//        dishEntry.setIngredientList(tt);
+//        dishEntry2.setIngredientList(tt);
+//        dishEntry3.setIngredientList(tt);
+//
+//        Map<String, DishEntry> dd = new HashMap<>();
+//        Map<String, DishEntry> dd2 = new HashMap<>();
+//
+//        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry);
+//        dd2.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry3);
+//        dd.put(firebaseAuthViewModel.getSimpleFirebaseUser(), dishEntry2);
+//        ref2.push().setValue(dd);
+//        ref2.push().setValue(dd2);
 //
 
         //Factory to get the viewModel for dishes
@@ -207,9 +208,10 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        mDishesRecyclerView.scrollToPosition(mPosition);
-//    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+
+    }
 }
