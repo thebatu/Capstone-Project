@@ -8,6 +8,9 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +31,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     private ArrayList<DishEntry> mDishEntries;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     OnItemClickListener onItemClickListener;
+    private final static int FADE_DURATION = 1000;
 
 
     //constructor
@@ -64,6 +68,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         holder.companyName.setText(dishEntry.getName());
         holder.price.setText(Integer.toString(dishEntry.getPrice()));
 
+        // Set the view to fade in
+        setFadeAnimation(holder.itemView);
+
+
         //Load image if exists otherwise load a place holder
 //        if (!dishEntry.getImage().isEmpty()) {
 //            Picasso.get().load(dishEntry.getImage()).into(holder.dishImage);
@@ -85,11 +93,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     public void swapDishes(HashMap<String, DishEntry> dishEntries) {
 
         //if there was no dish data, then recreate all of the list
-        if (mDishes == null) {
+
             mDishes = dishEntries;
             mDishEntries = new ArrayList<>(dishEntries.values());
             notifyDataSetChanged();
-        }
     }
 
     /**
@@ -129,6 +136,18 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             onItemClickListener.onItemClick(dishEntry.getUserId(), dishEntry.getRemoteID());
         }
 
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+
+    private void setScaleAnimation(View view) {
+        ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
     }
 
 }

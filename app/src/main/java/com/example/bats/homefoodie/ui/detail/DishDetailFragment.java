@@ -62,6 +62,12 @@ public class DishDetailFragment extends Fragment {
     Toolbar toolbar;
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity()))
+                .getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,9 +115,7 @@ public class DishDetailFragment extends Fragment {
         mDetailRecyclerView.setAdapter(mDishDetailAdapter);
 
 
-        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(Objects
-                .requireNonNull(this
-                        .getActivity()));
+        MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this.getActivity());
         //get the dishesViewModel
         DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get
                 (DishesViewModel.class);
@@ -124,7 +128,7 @@ public class DishDetailFragment extends Fragment {
         }else{
             showMainDishDataView();
         }
-        aDish.observe(getActivity(), dish -> {
+        aDish.observe(this, dish -> {
             if (dish != null) {
                 showMainDishDataView();
                 dish_name.setText(dish.get(0).getName());
