@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
 
         //check device orientation
         int orientation = getResources().getConfiguration().orientation;
-
         //if horizontal
         if (orientation == 2) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
@@ -82,9 +81,6 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
         mDishesAdapter = new DishesAdapter(this, this);
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
-//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference ref = database.getReference("/dishes");
-//
         DatabaseReference ref2 =
         FirebaseDatabase.getInstance().getReference("/dishes");
 
