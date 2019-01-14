@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.ui.userAuth.UserLogin;
+import com.example.bats.homefoodie.ui.userAuth.UserAuthGoogle;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class BaseActivity extends AppCompatActivity {
@@ -34,7 +33,7 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_login:
-                Intent a = new Intent(BaseActivity.this, UserLogin.class);
+                Intent a = new Intent(BaseActivity.this, UserAuthGoogle.class);
                 startActivity(a);
                 return true;
 
