@@ -21,7 +21,7 @@ public class AddDish extends AppCompatActivity {
 
 
 
-        parentLayout = (LinearLayout) findViewById(R.id.dish_ingredient_ll);
+        parentLayout = (LinearLayout) findViewById(R.id.parent_linear_layout2);
 
     }
 
