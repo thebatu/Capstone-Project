@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.BaseActivity" />
-        <activity android:name=".ui.userAuth.UserAuthGoogle"></activity>
+        <activity android:name=".ui.userAuth.UserAuthGoogle" />
+        <activity android:name=".ui.create_dish.AddDish"></activity>
     </application>
 
 </manifest>

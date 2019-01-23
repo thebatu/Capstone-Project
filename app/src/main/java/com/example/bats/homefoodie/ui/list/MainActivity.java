@@ -87,7 +87,6 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
         //Check if user is signedIn. if not signIn user anonymously.
         FirebaseAuthViewModel firebaseAuthViewModel =
                 ViewModelProviders.of(MainActivity.this).get(FirebaseAuthViewModel.class);
-
         firebaseAuthViewModel
                 .getFirebaseAuthLiveData()
                 .observe(this, firebaseUser -> {
