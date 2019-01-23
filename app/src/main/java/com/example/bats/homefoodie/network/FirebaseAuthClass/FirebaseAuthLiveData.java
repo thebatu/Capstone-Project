@@ -20,7 +20,6 @@ public class FirebaseAuthLiveData extends LiveData {
                 if (firebaseUser == null) {
                     firebaseAuth.signInAnonymously().addOnSuccessListener(authResult -> {
                         FirebaseUser user = mAuth.getCurrentUser();
-
                         setValue(user);
                     });
                 }

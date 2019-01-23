@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Font family and style used in the app-->
+    <font
+        android:textStyle="bold"
+        android:fontWeight="400"
+        android:font="@font/roboto_bold" />
+
+    <font
+        android:textStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/roboto_medium" />
+
+    <font
+        android:textStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/roboto_italic" />
+
+</font-family>
