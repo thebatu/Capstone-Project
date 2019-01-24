@@ -27,14 +27,17 @@ public class AddDish extends AppCompatActivity {
 
 
     public void onDelete(View v) {
-        parentLayout.removeView((View) v.getParent());
+        if (parentLayout.getChildCount() > 0) {
+            parentLayout.removeView((View) v.getParent());
+        }
+
     }
 
     public void onAddField(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.field, null);
         // Add the new row before the add field button.
-        parentLayout.addView(rowView, parentLayout.getChildCount() -1 );
+        parentLayout.addView(rowView, parentLayout.getChildCount() -1);
     }
 
 

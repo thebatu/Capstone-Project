@@ -18,7 +18,9 @@
         </activity>
         <activity android:name=".ui.BaseActivity" />
         <activity android:name=".ui.userAuth.UserAuthGoogle" />
-        <activity android:name=".ui.create_dish.AddDish"></activity>
+        <activity android:name=".ui.create_dish.AddDish">
+            android:windowSoftInputMode="adjustNothing"
+        </activity>
     </application>
 
 </manifest>
