@@ -21,15 +21,13 @@
         <ImageButton
             android:id="@+id/star"
             android:layout_width="59dp"
-            android:elevation="10dp"
+            android:elevation="1dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/heart"
-
             tools:ignore="ContentDescription" />
-
 
         <ImageView
             android:id="@+id/mainpage_image"

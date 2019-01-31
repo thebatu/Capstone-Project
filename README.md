@@ -1,6 +1,3 @@
-# Capstone-Project
-# Final project for Udacity Android developer Nano Degree
-
 
 # Stack
 1. Room database
@@ -8,4 +5,3 @@
   * LiveData
   * ViewModel
 3. 
-4. 

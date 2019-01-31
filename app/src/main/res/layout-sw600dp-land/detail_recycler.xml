@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+
+    /FrameLayout>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/colorPrimaryDark"
     android:clickable="true"
     android:background="@drawable/ten_pain_level_background"
     tools:context=".ui.detail.DishDetailFragment">
 
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="497dp"
         android:layout_height="223dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:scaleType="center"
         android:src="@drawable/place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/include2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

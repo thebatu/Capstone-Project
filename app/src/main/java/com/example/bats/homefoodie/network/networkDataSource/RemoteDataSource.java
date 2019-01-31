@@ -24,7 +24,7 @@ public class RemoteDataSource {
     private Context mContext;
 
     // LiveData storing the latest downloaded dishes
-    private LiveData<HashMap<String, DishEntry>> mDownloadedUserList2;
+    private LiveData<HashMap<String, DishEntry>> mDownloadedDishes;
     private AppExecutors mExecutors;
     private final DatabaseReference ALL_DISHES_REF;
 
@@ -34,11 +34,10 @@ public class RemoteDataSource {
         this.mContext = mContext;
         mExecutors = appExecutors;
         //firebase listener to /users
-
         ALL_DISHES_REF = FirebaseDatabase.getInstance().getReference(mContext.getString(R.string
                 .Dishes));
         FirebaseQueryLiveDataService liveData = new FirebaseQueryLiveDataService(ALL_DISHES_REF);
-        mDownloadedUserList2 =
+        mDownloadedDishes =
                 Transformations.map(liveData, new Deserializer());
     }
 
@@ -75,13 +74,12 @@ public class RemoteDataSource {
                 }
             }
             return dishes;
-
         }
     }
 
     //getter
     public LiveData<HashMap<String, DishEntry>> getLatestDishes() {
-        return mDownloadedUserList2;
+        return mDownloadedDishes;
     }
 
 

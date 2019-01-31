@@ -8,6 +8,9 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,18 +29,18 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
     private final Context mContext;
     private HashMap<String, DishEntry> mDishes;
     private ArrayList<DishEntry> mDishEntries;
-    private SparseBooleanArray expandState = new SparseBooleanArray();
-    OnItemClickListener onItemClickListener;
+    public OnItemClickListener onItemClickListener;
+    private final static int FADE_DURATION = 1000;
 
 
     //constructor
-    public DishesAdapter(Context context, OnItemClickListener listener ) {
+    public DishesAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
         onItemClickListener = listener;
 
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         void onItemClick(String id, String position);
     }
 
@@ -64,6 +67,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
         holder.companyName.setText(dishEntry.getName());
         holder.price.setText(Integer.toString(dishEntry.getPrice()));
 
+        // Set the view to fade in
+        setFadeAnimation(holder.itemView);
+
+
         //Load image if exists otherwise load a place holder
 //        if (!dishEntry.getImage().isEmpty()) {
 //            Picasso.get().load(dishEntry.getImage()).into(holder.dishImage);
@@ -76,20 +83,22 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * @return items number in the dishEntry array
      */
     @Override
-    public int getItemCount() { return mDishes == null ? 0 : mDishes.size(); }
+    public int getItemCount() {
+        return mDishes == null ? 0 : mDishes.size();
+    }
 
     /**
      * updates the data set for the adapter
+     *
      * @param dishEntries dishes to be displayed
      */
     public void swapDishes(HashMap<String, DishEntry> dishEntries) {
 
         //if there was no dish data, then recreate all of the list
-        if (mDishes == null) {
-            mDishes = dishEntries;
-            mDishEntries = new ArrayList<>(dishEntries.values());
-            notifyDataSetChanged();
-        }
+
+        mDishes = dishEntries;
+        mDishEntries = new ArrayList<>(dishEntries.values());
+        notifyDataSetChanged();
     }
 
     /**
@@ -97,7 +106,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
      * a cache of the child views for a forecast item. It's also a convenient place to set an
      * OnClickListener, since it has access to the adapter and the views.
      */
-    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class DishesAdapterViewHolder extends RecyclerView.ViewHolder implements View
+            .OnClickListener {
         ImageView dishImage;
         ImageButton favoriteStar;
         TextView dishName;
@@ -118,6 +128,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
 
         /**
          * gets called when clicking on a dish
+         *
          * @param view the View that was clicked
          */
         @Override
@@ -129,6 +140,19 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.DishesAdap
             onItemClickListener.onItemClick(dishEntry.getUserId(), dishEntry.getRemoteID());
         }
 
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+
+    private void setScaleAnimation(View view) {
+        ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation
+                .RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
     }
 
 }

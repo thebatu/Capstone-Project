@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:elevation="4dp"
     tools:context=".ui.list.MainActivity">
 
     <android.support.v7.widget.RecyclerView
