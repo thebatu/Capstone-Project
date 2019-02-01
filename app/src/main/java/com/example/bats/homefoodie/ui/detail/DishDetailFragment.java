@@ -2,6 +2,7 @@ package com.example.bats.homefoodie.ui.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -61,27 +62,30 @@ public class DishDetailFragment extends Fragment {
     TextView the_kitchen_name;
     Toolbar toolbar;
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity()))
-                .getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity()))
+//                .getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_recycler, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         toolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
+
         Objects.requireNonNull(((MainActivity) Objects.requireNonNull(getActivity()))
                 .getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        toolbar.setTitle("Title");
+        Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setDisplayShowTitleEnabled(true);
+
+        toolbar.setNavigationIcon(android.support.v7.appcompat.R.drawable.abc_ic_ab_back_material);
         toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
         toolbar.setNavigationOnClickListener(v -> {
-
             getActivity().onBackPressed();
         });
         return view;
@@ -113,8 +117,11 @@ public class DishDetailFragment extends Fragment {
         mDetailRecyclerView.setHasFixedSize(true);
         mDishDetailAdapter = new DishDetailAdapter(getContext());
         mDetailRecyclerView.setAdapter(mDishDetailAdapter);
+        //hack to disable toolbar from expanding in a fragment
+        mDetailRecyclerView.setNestedScrollingEnabled(false);
 
 
+        // create factory for the dishesViewModel
         MainViewModelFactory factory = InjectorUtils.provideDishesViewModelFactory(this.getActivity());
         //get the dishesViewModel
         DishesViewModel mDishesViewModel = ViewModelProviders.of(this, factory).get
@@ -138,15 +145,16 @@ public class DishDetailFragment extends Fragment {
                 mDishDetailAdapter.swapDishes(dish.get(0));
                 the_dish_name.setText("Dish name: ");
                 the_kitchen_name.setText("Kitchen name: ");
+                toolbar.setTitle(dish.get(0).getName());
+
             } else {
                 showLoading();
             }
 
         });
 
-        Log.d("tag", "kjhkh");
+        Log.d("tag", "here");
     }
-
 
     @Override
     public void onDestroyView() {

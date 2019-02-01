@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -62,6 +63,8 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
         ButterKnife.bind(this);
         context = this;
 
+        ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout)).setTitle("Screen Title");
+
         //check device orientation
         int orientation = getResources().getConfiguration().orientation;
         //if horizontal
@@ -73,7 +76,7 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
         //if vertical
         if (orientation == 1){
             LinearLayoutManager layoutManager =
-                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+                    new LinearLayoutManager(this);
             mDishesRecyclerView.setLayoutManager(layoutManager);
         }
 
@@ -193,20 +196,17 @@ public class MainActivity extends BaseActivity implements DishesAdapter.OnItemCl
                         R.anim.exit_to_right).add(R.id.container, detailFragment, FragmentTAG)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mDishesRecyclerView.scrollToPosition(mPosition);
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-
     }
 }

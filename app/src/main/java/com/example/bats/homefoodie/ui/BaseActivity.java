@@ -1,6 +1,7 @@
 package com.example.bats.homefoodie.ui;
 
 import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ public class BaseActivity extends AppCompatActivity {
         // *** Enable local phone persistence ***
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //update fbu variable with the current user
+
         check_status();
     }
 
