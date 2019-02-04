@@ -1,4 +1,4 @@
-package com.example.bats.homefoodie.ui.create_dish;
+package com.example.bats.homefoodie.ui.createDish;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -6,9 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -28,6 +33,7 @@ public class AddDish extends AppCompatActivity {
     ScrollView scrollView;
     public static final int PICK_IMAGE = 1;
     private Context context;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,13 @@ public class AddDish extends AppCompatActivity {
         setContentView(R.layout.activity_add_dish);
         ButterKnife.bind(this);
         context = this;
+        Button button = findViewById(R.id.ttt);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gatherDishInfo(linearLayout);
+            }
+        });
     }
 
     /**
@@ -57,7 +70,10 @@ public class AddDish extends AppCompatActivity {
         final View rowView = inflater.inflate(R.layout.row_add_ingredient, null);
         // Add the new row before the add dish button.
         parentLayout.addView(rowView, parentLayout.getChildCount() - 1);
+        linearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout2);
+
         focusOnView();
+
     }
 
     /**
@@ -103,6 +119,21 @@ public class AddDish extends AppCompatActivity {
     }
 
 
+    public void gatherDishInfo(ViewGroup viewGroup){
+        SparseArray<EditText> array = new SparseArray<EditText>();
+
+        int count = viewGroup.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View view1 = viewGroup.getChildAt(i);
+            if (view1 instanceof LinearLayout)
+                gatherDishInfo((ViewGroup) view1);
+             else if (view1 instanceof EditText) {
+                 EditText edittext = (EditText) view1;
+                array.put(edittext.getId(), edittext);
+            }
+        }
+
+    }
 
 
 

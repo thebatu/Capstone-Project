@@ -1,7 +1,6 @@
 package com.example.bats.homefoodie.ui;
 
 import android.content.Intent;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bats.homefoodie.R;
-import com.example.bats.homefoodie.ui.create_dish.AddDish;
+import com.example.bats.homefoodie.ui.createDish.AddDish;
 import com.example.bats.homefoodie.ui.userAuth.UserAuthGoogle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
