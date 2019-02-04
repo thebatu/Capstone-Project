@@ -40,7 +40,6 @@ public class UserAuthGoogle extends AppCompatActivity implements View.OnClickLis
 
         mAuth = FirebaseAuth.getInstance();
 
-
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions
@@ -97,7 +96,7 @@ public class UserAuthGoogle extends AppCompatActivity implements View.OnClickLis
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Google sign in failed " + e.getMessage() );
                 //updateUI(null);
             }
         }
