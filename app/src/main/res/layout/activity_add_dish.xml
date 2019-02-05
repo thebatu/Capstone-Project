@@ -110,51 +110,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/city" />
 
-        <ScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/ingredient_et"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:clipToPadding="true"
-            android:fillViewport="true"
-            android:fontFamily="@font/roboto_medium"
-            app:layout_constraintTop_toBottomOf="@+id/dish_description">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/parent_linear_layout2"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:orientation="vertical">
-
-                <include layout="@layout/row_add_ingredient" />
-            </LinearLayout>
-
-        </ScrollView>
-
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/roboto_light"
+            android:hint="add an ingredient"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toTopOf="@+id/ingredient_list"
+            app:layout_constraintEnd_toStartOf="@+id/add_ingredient_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dish_description" />
 
         <Button
             android:id="@+id/add_ingredient_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/colorPrimary"
-            android:onClick="onAddIngredient"
             android:padding="2dp"
             android:text="Add Ingredient"
             android:textColor="#FFF"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/ingredient_et"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scroll"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/ingredient_et" />
 
         <Button
-            android:id="@+id/ttt"
+            android:id="@+id/save_dish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SAVE"
@@ -162,6 +150,17 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ListView
+            android:id="@+id/ingredient_list"
+            android:layout_width="393dp"
+            android:layout_height="99dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/save_dish"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
